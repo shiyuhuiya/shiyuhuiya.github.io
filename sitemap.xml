@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/posts/42807cbc.html</loc>
+    <loc>https://www.sanye.blog/posts/42807cbc.html</loc>
     
     <lastmod>2024-11-29</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/index.html</loc>
+    <loc>https://www.sanye.blog/tags/index.html</loc>
     
     <lastmod>2024-11-25</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>https://www.sanye.blog/categories/index.html</loc>
     
     <lastmod>2024-11-24</lastmod>
     
@@ -30,7 +30,7 @@
   
 
   <url>
-    <loc>http://example.com/</loc>
+    <loc>https://www.sanye.blog/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -38,42 +38,42 @@
 
   
   <url>
-    <loc>http://example.com/tags/hexo/</loc>
+    <loc>https://www.sanye.blog/tags/hexo/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/git/</loc>
+    <loc>https://www.sanye.blog/tags/git/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/node-js/</loc>
+    <loc>https://www.sanye.blog/tags/node-js/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/github/</loc>
+    <loc>https://www.sanye.blog/tags/github/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/butterfly/</loc>
+    <loc>https://www.sanye.blog/tags/butterfly/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/SEO/</loc>
+    <loc>https://www.sanye.blog/tags/SEO/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -82,7 +82,7 @@
 
   
   <url>
-    <loc>http://example.com/categories/hexo/</loc>
+    <loc>https://www.sanye.blog/categories/hexo/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
