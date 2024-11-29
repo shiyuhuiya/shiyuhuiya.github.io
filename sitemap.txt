@@ -1,0 +1,11 @@
+http://example.com/posts/42807cbc.html
+http://example.com/tags/index.html
+http://example.com/categories/index.html
+http://example.com/
+http://example.com/tags/hexo/
+http://example.com/tags/git/
+http://example.com/tags/node-js/
+http://example.com/tags/github/
+http://example.com/tags/butterfly/
+http://example.com/tags/SEO/
+http://example.com/categories/hexo/
