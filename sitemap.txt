@@ -4,8 +4,6 @@ https://www.sanye.blog/categories/index.html
 https://www.sanye.blog/
 https://www.sanye.blog/tags/hexo/
 https://www.sanye.blog/tags/git/
-https://www.sanye.blog/tags/node-js/
 https://www.sanye.blog/tags/github/
 https://www.sanye.blog/tags/butterfly/
-https://www.sanye.blog/tags/SEO/
 https://www.sanye.blog/categories/hexo/
