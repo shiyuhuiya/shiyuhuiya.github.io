@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
     <loc>https://www.sanye.blog/posts/42807cbc.html</loc>
     
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -31,7 +31,7 @@
 
   <url>
     <loc>https://www.sanye.blog/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -39,42 +39,42 @@
   
   <url>
     <loc>https://www.sanye.blog/tags/hexo/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.sanye.blog/tags/git/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.sanye.blog/tags/node-js/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.sanye.blog/tags/github/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.sanye.blog/tags/butterfly/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://www.sanye.blog/tags/SEO/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -83,7 +83,7 @@
   
   <url>
     <loc>https://www.sanye.blog/categories/hexo/</loc>
-    <lastmod>2024-11-29</lastmod>
+    <lastmod>2024-12-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
