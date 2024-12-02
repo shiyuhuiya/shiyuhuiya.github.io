@@ -1,7 +1,11 @@
 https://www.sanye.blog/posts/42807cbc.html
+https://www.sanye.blog/posts/72ebd24d.html
 https://www.sanye.blog/tags/index.html
 https://www.sanye.blog/categories/index.html
 https://www.sanye.blog/
+https://www.sanye.blog/tags/https/
+https://www.sanye.blog/tags/gulp/
+https://www.sanye.blog/tags/webpack/
 https://www.sanye.blog/tags/hexo/
 https://www.sanye.blog/tags/git/
 https://www.sanye.blog/tags/github/
