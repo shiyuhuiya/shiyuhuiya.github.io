@@ -1,0 +1,271 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>三叶的博客 - 记录学习，分享知识</title><meta name="author" content="三叶sanye"><meta name="copyright" content="三叶sanye"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="记录学习，分享知识">
+<meta property="og:type" content="website">
+<meta property="og:title" content="三叶的博客">
+<meta property="og:url" content="https://www.sanye.blog/page/2/index.html">
+<meta property="og:site_name" content="三叶的博客">
+<meta property="og:description" content="记录学习，分享知识">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.sanye.blog/images/%E4%B8%89%E5%8F%B6.png">
+<meta property="article:author" content="三叶sanye">
+<meta property="article:tag" content="html js css vue 前端开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.sanye.blog/images/%E4%B8%89%E5%8F%B6.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.sanye.blog/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-center"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '三叶的博客',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/bilibiliBanner.css"  media="defer" onload="this.media='screen'"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/time.css"><link rel="stylesheet" href="/css/iconfont.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="iron-container iron-circle"><div class="iron-box1 iron-circle iron-center"></div><div class="iron-box2 iron-circle iron-center"></div><div class="iron-box3 iron-circle iron-center"></div><div class="iron-box4 iron-circle iron-center"></div><div class="iron-box5 iron-circle iron-center"></div><div class="iron-box6 iron-circle"><div class="iron-coil" style="--i: 0"></div><div class="iron-coil" style="--i: 1"></div><div class="iron-coil" style="--i: 2"></div><div class="iron-coil" style="--i: 3"></div><div class="iron-coil" style="--i: 4"></div><div class="iron-coil" style="--i: 5"></div><div class="iron-coil" style="--i: 6"></div><div class="iron-coil" style="--i: 7"></div></div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E4%B8%89%E5%8F%B6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/images/cover/星空.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name iconfont icon-sanyecao">三叶的博客</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="winterBanner"><div class="view"><img class="morning" src="/bilibiliBanner/winter/bilibili-winter-view-1.png" alt=""><img class="afternoon" src="/bilibiliBanner/winter/bilibili-winter-view-2.png" alt=""><video class="evening" autoplay="" loop="" muted=""><source src="/bilibiliBanner/winter/bilibili-winter-view-3.webm" type="video/webm"></video><img class="window-cover" src="/bilibiliBanner/winter/bilibili-winter-view-3-snow.png" alt=""></div><div class="tree"><img class="morning" src="/bilibiliBanner/winter/bilibili-winter-tree-1.png" alt=""><img class="afternoon" src="/bilibiliBanner/winter/bilibili-winter-tree-2.png" alt=""><img class="evening" src="/bilibiliBanner/winter/bilibili-winter-tree-3.png" alt=""></div></div><script async data-pjax src="/js/bilibili-banner.js"></script><div id="site-info"><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://space.bilibili.com/660655866?spm_id_from=333.1007.0.0" rel="external nofollow noreferrer" target="_blank" title="Bilibli"><i class="fa-brands fa-bilibili" style="color: #74C0FC;"></i></a><a class="social-icon" href="https://github.com/syhy" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3519450570@qq.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div></header><main class="layout" id="content-inner"><div class="recent-posts nc masonry" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover"><a href="/posts/4b58a1f5.html" title="前端面试---css"><img class="post-bg" src="/images/cover/%E6%B1%9F%E5%8D%97.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端面试---css"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/4b58a1f5.html" title="前端面试---css">前端面试---css</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-17T07:42:30.000Z" title="发表于 2024-12-17 15:42:30">2024-12-17</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:04:11.723Z" title="更新于 2025-02-09 11:04:11">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/">前端面试</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/css/">css</a></span></div><div class="content">全文主要参考如下gituhub项目，在此基础上补充了一些自己的东西： https://github.com/febobo/web-interview 项目网站：web前端面试 - 面试官系列 一个非常全面，细致的前端面试题库,十分的推荐，深刻体会到github的强大之处了。 说说css盒模型浏览器在渲染html元素的时候，会把所有元素表示为一个一个矩形的盒子。 盒模型组成 content 即实际内容，显示文本和图像  padding 即内边距，内边距是透明的，取值不能为负，背景图片可以扩展到padding。  border 即边框，由粗细、样式、颜色三部分组成。例如border:1px solid...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/aef189c3.html" title="前端面试---js部分"><img class="post-bg" src="/images/cover/%E7%A7%98%E5%AF%86%E9%A3%8E%E6%99%AF.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端面试---js部分"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/aef189c3.html" title="前端面试---js部分">前端面试---js部分</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-13T11:39:03.000Z" title="发表于 2024-12-13 19:39:03">2024-12-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:03:34.603Z" title="更新于 2025-02-09 11:03:34">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/">前端面试</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/js/">js</a></span></div><div class="content">JavaScript说说js的数据类型js的数据类型可以分为两类，基本数据类型和引用数据类型 基本数据类型基本数据类型主要有6种：Number,String,Boolean,Symbol,Null,Undefined  number 最常见的整数类型格式则为十进制，还可以设置八进制（零开头）、十六进制（0x开头） 123let intNum = 55 // 10进制的55let num1 = 070 // 8进制的56let hexNum1 = 0xA //16进制的10  浮点类型则在数值中必须包含小数点，还可通过科学计数法表示。 1234let floatNum1 = 1.1;let floatNum2 = 0.1;let floatNum3 = .1; // 有效，但不推荐let floatNum = 3.125e7; // 等于 31250000  在数值类型中，存在一个特殊数值NaN，意为“不是数值”，用于表示数值运算操作失败了（而不是抛出错误） 12console.log(0/0); // NaNconsole.log(-0/+0); //...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/f33bd2b9.html" title="前端面试---vue部分"><img class="post-bg" src="/images/cover/%E5%B0%8F%E9%95%87.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端面试---vue部分"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/f33bd2b9.html" title="前端面试---vue部分">前端面试---vue部分</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-13T10:56:10.000Z" title="发表于 2024-12-13 18:56:10">2024-12-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:03:00.486Z" title="更新于 2025-02-09 11:03:00">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/">前端面试</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/vue/">vue</a></span></div><div class="content">Vue2推荐一个学习vue的网站：Vue3 说说你对vue的理解前端发展背景最早的网页是没有数据库的，可以理解成就是一张可以在网络上浏览的报纸，就是纯静态页面 直到CGI技术的出现通过 CGI Perl 运行一小段代码与数据库或文件系统进行交互(前后端交互) 后来JSP(Java Server Pages)技术取代了CGI技术，其实就是Java + HTML 1234567891011&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot; pageEncoding=&quot;utf-8&quot;%&gt;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset=&quot;utf-8&quot;&gt;    &lt;title&gt;JSP demo&lt;/title&gt;&lt;/head&gt;&lt;body&gt;    &lt;img...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/c6adabe2.html" title="gprMax"><img class="post-bg" src="/images/cover/maomao.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="gprMax"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/c6adabe2.html" title="gprMax">gprMax</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-10T03:02:47.000Z" title="发表于 2024-12-10 11:02:47">2024-12-10</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:00:07.828Z" title="更新于 2025-02-09 11:00:07">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/">探地雷达</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/grpMax/">grpMax</a></span></div><div class="content">gprMax定义gpr是Ground Penetrating Radar（探地雷达）的缩写，而gprMax是一款模拟电磁波传播的开源软件，它使用有限差分时域 （FDTD） 方法求解 3D 麦克斯韦方程组。gprMax 专为模拟探地雷达 （GPR） 而设计，但也可用于模拟许多其他应用的电磁波传播。很遗憾，目前为止它还没有图形用户界面（GUI），它的建模关键在于in文件的编写。 安装步骤 详细安装步骤参考：gprMax最详安装步骤及常见问题解答 - 知乎  安装步骤简述：  下载Anaconda，并配置好环境变量， 因为gprMax是基于python语言编写的，所以需要安装python及所需python包 Anaconda 对于 Python 的作用，类似js中的npm，java中的maven。  安装git 目的是使用git克隆github上的gprMax仓库，下载gprMax  下载gprMax包 1git clone...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/b9039437.html" title="科研项目概述"><img class="post-bg" src="/images/cover/summer.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="科研项目概述"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/b9039437.html" title="科研项目概述">科研项目概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-08T06:15:05.818Z" title="发表于 2024-12-08 14:15:05">2024-12-08</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:06:41.146Z" title="更新于 2025-02-09 11:06:41">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/">探地雷达</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/GPR/">GPR</a></span></div><div class="content">基于探地雷达信号属性特征的目标体智能识别研究什么是探地雷达？探地雷达(GPR，Ground Penetrating Radar)是通过发射高频电磁脉冲波，利用地下介质电磁性质的差异，根据回波的振幅、波形和频率等运动学和动力学特征来分析和推断介质结构和物性特征。探地雷达技术在过去的时间里，在理论、技术和应用领域方面，都取得了极大进展，已经成为一种高分辨的无损探测技术。 探底雷达的原理通过发射天线向地下发射高频电磁波，通过接收天线接收反射回地面的电磁波，电磁波在地下介质中传播时遇到存在电性差异的界面时发生反射，根据接收到电磁波的波形、振幅强度和时间的变化特征推断地下介质的空间位置、结构、形态和埋藏深度。 探地雷达可以用来干什么 探地雷达可用于检测各种材料，如岩石、泥土、砾石，以及人造材料如混凝土、砖、沥青等的组成。  探地雷达可确定金属或非金属管道、下水道、缆线、缆线管道、孔洞、基础层、混凝土中的钢筋及其它地下埋件的位置。  它还可检测不同岩层的深度和厚度，并常用于地面作业开工前对地面作一个广泛的调查。   参考： 物探中的一只眼——探地雷达 -...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/c0add594.html" title="前端面试---网络"><img class="post-bg" src="/images/cover/%E4%BA%91%E6%B9%96%E5%B0%91%E5%A5%B3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端面试---网络"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/c0add594.html" title="前端面试---网络">前端面试---网络</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-03T14:15:34.000Z" title="发表于 2024-12-03 22:15:34">2024-12-03</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T03:04:46.648Z" title="更新于 2025-02-09 11:04:46">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/">前端面试</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/http-https/">http/https</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/osi/">osi</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/dns/">dns</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/tcp-udp/">tcp/udp</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/cdn/">cdn</a></span></div><div class="content">全文主要参考如下gituhub项目，在此基础上补充了一些自己的东西： https://github.com/febobo/web-interview 项目网站：web前端面试 - 面试官系列 一个非常全面，细致的前端面试题库,十分的推荐，深刻体会到github的强大之处了。 浏览器以下内容参考视频：【干货】浏览器是如何运作的？_哔哩哔哩_bilibili 组成 用户界面 浏览器引擎用于在用户界面和渲染引擎之间传递数据，类似一个桥梁，组成包括持久层 渲染引擎也叫做浏览器的内核，组成包括： HTML 解析器：负责读取 HTML 文档并构建 DOM 树。 CSS 解析器：解析 CSS 代码，并应用到 DOM 元素上。 JavaScript 引擎：执行嵌入在网页中的 JavaScript 代码，如 V8（用于 Blink）、SpiderMonkey（用于 Gecko）等。 布局引擎：计算每个可见元素的位置和尺寸，即重排（reflow）过程。 绘制引擎：将渲染树转换为屏幕上的像素，即重绘（repaint）过程。 合成器：如果有多个图层（例如，带有 transform 或 opacity...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/8b27fb24.html" title="webpack基础"><img class="post-bg" src="/images/cover/forest.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="webpack基础"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/8b27fb24.html" title="webpack基础">webpack基础</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-02T11:55:27.000Z" title="发表于 2024-12-02 19:55:27">2024-12-02</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T02:57:45.305Z" title="更新于 2025-02-09 10:57:45">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/webpack/">webpack</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/webpack/">webpack</a></span></div><div class="content">快速开始定义基于node.js来开发的静态资源打包工具，最基本的功能是递归解析依赖的文件并打包，顺便把模块化代码转化成可以直接在浏览器上运行的代码。 下载1npm i webpack webpack-cli -D //下载webpack和调用webpack的命令  不下载到全局的原因：  不同项目可能需要使用不同版本的webpack  下载到全局无法被项目中的package.json文件记录，分享项目给其他人使用的时候需要额外下载webpack   webpack打包命令 如果全局安装： 1webpack  如果安装到本地 1npx webpack #npx会自动在node_modules/.bins目录下查找可执行文件  或者 1npx webpack --watch...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/72ebd24d.html" title="hexo博客搭建的一些思考"><img class="post-bg" src="/images/cover/%E6%98%9F%E7%A9%BA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo博客搭建的一些思考"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/72ebd24d.html" title="hexo博客搭建的一些思考">hexo博客搭建的一些思考</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-02T05:16:18.000Z" title="发表于 2024-12-02 13:16:18">2024-12-02</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T06:44:26.752Z" title="更新于 2025-02-09 14:44:26">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/hexo/">hexo</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/http-https/">http/https</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/gulp/">gulp</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/webpack/">webpack</a></span></div><div class="content">...</div></div></div><div class="recent-post-item"><div class="post_cover"><a href="/posts/42807cbc.html" title="从0开始搭建hexo+butterfly博客"><img class="post-bg" src="/images/cover/%E6%B1%9F%E5%8D%97.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从0开始搭建hexo+butterfly博客"></a></div><div class="recent-post-info"><a class="article-title" href="/posts/42807cbc.html" title="从0开始搭建hexo+butterfly博客">从0开始搭建hexo+butterfly博客</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-26T14:14:21.000Z" title="发表于 2024-11-26 22:14:21">2024-11-26</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-09T06:45:02.256Z" title="更新于 2025-02-09 14:45:02">2025-02-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/hexo/">hexo</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/hexo/">hexo</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/git/">git</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/github/">github</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/butterfly/">butterfly</a></span></div><div class="content">从0开始搭建hexo+butterfly博客什么是hexo?Hexo 是一个快速、简洁且高效的博客框架。 Hexo 使用 Markdown（或其他标记语言）解析文章，在几秒内，即可利用靓丽的主题生成静态网页（html）。 其他博客框架：vuepress , gatsby；前者适合vue开发者，后者适合react开发者。 安装hexo 需要提前准备的工具：vscode, git, node.js；去对应的官网下载即可。  在任意位置新建一个文件夹，右键选择用vscode打开；或者直接打开vscode新建一个文件夹，取一个合适的名字，比如blog；右键文件夹，在当前文件下打开终端，执行以下命令： 12345npm install -g hexo-cli //全局安装hexohexo init blog //初始化一个博客blogcd blog //进入到博客文件npm install //安装所需依赖hexo server //在本地部署博客  好了，再访问http://localhost:4000就能看到运行在本地的博客了 hexo常用指令1234hexo clean...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E4%B8%89%E5%8F%B6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">三叶sanye</div><div class="author-info-description">记录学习，分享知识</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://space.bilibili.com/660655866?spm_id_from=333.1007.0.0" rel="external nofollow noreferrer" target="_blank" title="Bilibli"><i class="fa-brands fa-bilibili" style="color: #74C0FC;"></i></a><a class="social-icon" href="https://github.com/syhy" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3519450570@qq.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">笔记主要自用，希望也能帮到你😀</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/e255a10a.html" title="计算机网络"><img src="/images/cover/maomao.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机网络"/></a><div class="content"><a class="title" href="/posts/e255a10a.html" title="计算机网络">计算机网络</a><time datetime="2025-02-07T15:08:21.000Z" title="发表于 2025-02-07 23:08:21">2025-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4b0178e0.html" title="数据结构与算法"><img src="/images/cover/%E7%A7%98%E5%AF%86%E9%A3%8E%E6%99%AF.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法"/></a><div class="content"><a class="title" href="/posts/4b0178e0.html" title="数据结构与算法">数据结构与算法</a><time datetime="2025-02-07T14:48:29.000Z" title="发表于 2025-02-07 22:48:29">2025-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d04bd5bc.html" title="操作系统"><img src="/images/cover/%E6%98%9F%E7%A9%BA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统"/></a><div class="content"><a class="title" href="/posts/d04bd5bc.html" title="操作系统">操作系统</a><time datetime="2025-02-06T15:49:56.000Z" title="发表于 2025-02-06 23:49:56">2025-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8b27fabc.html" title="vue"><img src="/images/cover/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue"/></a><div class="content"><a class="title" href="/posts/8b27fabc.html" title="vue">vue</a><time datetime="2025-01-25T14:00:18.000Z" title="发表于 2025-01-25 22:00:18">2025-01-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/e19785da.html" title="uniapp"><img src="/images/cover/%E4%BA%91%E6%B9%96%E5%B0%91%E5%A5%B3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="uniapp"/></a><div class="content"><a class="title" href="/posts/e19785da.html" title="uniapp">uniapp</a><time datetime="2025-01-22T13:12:44.000Z" title="发表于 2025-01-22 21:12:44">2025-01-22</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/hexo/"><span class="card-category-list-name">hexo</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/nodejs/"><span class="card-category-list-name">nodejs</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/uniapp/"><span class="card-category-list-name">uniapp</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/vue/"><span class="card-category-list-name">vue</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/webpack/"><span class="card-category-list-name">webpack</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/"><span class="card-category-list-name">前端面试</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span class="card-category-list-name">微信小程序</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8E%A2%E5%9C%B0%E9%9B%B7%E8%BE%BE/"><span class="card-category-list-name">探地雷达</span><span class="card-category-list-count">2</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/github/" style="font-size: 1.1em; color: #999">github</a> <a href="/tags/git/" style="font-size: 1.1em; color: #999">git</a> <a href="/tags/osi/" style="font-size: 1.1em; color: #999">osi</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 1.1em; color: #999">微信小程序</a> <a href="/tags/webpack/" style="font-size: 1.5em; color: #99a9bf">webpack</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 1.1em; color: #999">数据结构与算法</a> <a href="/tags/express/" style="font-size: 1.1em; color: #999">express</a> <a href="/tags/dns/" style="font-size: 1.1em; color: #999">dns</a> <a href="/tags/GPR/" style="font-size: 1.1em; color: #999">GPR</a> <a href="/tags/uniapp/" style="font-size: 1.1em; color: #999">uniapp</a> <a href="/tags/hexo/" style="font-size: 1.1em; color: #999">hexo</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.1em; color: #999">操作系统</a> <a href="/tags/butterfly/" style="font-size: 1.1em; color: #999">butterfly</a> <a href="/tags/grpMax/" style="font-size: 1.1em; color: #999">grpMax</a> <a href="/tags/http-https/" style="font-size: 1.3em; color: #99a1ac">http/https</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 1.1em; color: #999">计算机网络</a> <a href="/tags/ES6/" style="font-size: 1.1em; color: #999">ES6</a> <a href="/tags/js/" style="font-size: 1.1em; color: #999">js</a> <a href="/tags/tcp-udp/" style="font-size: 1.1em; color: #999">tcp/udp</a> <a href="/tags/css/" style="font-size: 1.1em; color: #999">css</a> <a href="/tags/vue/" style="font-size: 1.3em; color: #99a1ac">vue</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 1.1em; color: #999">编译原理</a> <a href="/tags/gulp/" style="font-size: 1.1em; color: #999">gulp</a> <a href="/tags/nodejs/" style="font-size: 1.1em; color: #999">nodejs</a> <a href="/tags/cdn/" style="font-size: 1.1em; color: #999">cdn</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+    <ul class="card-archive-list">
+  
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/02/">
+          <span class="card-archive-list-date">二月 2025</span>
+          <span class="card-archive-list-count">3</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2025/01/">
+          <span class="card-archive-list-date">一月 2025</span>
+          <span class="card-archive-list-count">6</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2024/12/">
+          <span class="card-archive-list-date">十二月 2024</span>
+          <span class="card-archive-list-count">9</span>
+        </a>
+      </li>
+    
+      <li class="card-archive-list-item">
+        <a class="card-archive-list-link" href="/archives/2024/11/">
+          <span class="card-archive-list-date">十一月 2024</span>
+          <span class="card-archive-list-count">1</span>
+        </a>
+      </li>
+    </ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">198.3k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-02-09T06:58:10.561Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/images/cover/1.png);"><div id="footer-wrap"><div class="footer_custom_text"><div id="sanye"><svg class="icon" aria-hidden="true"><use href="#icon-banquan"></use></svg><span>2024 - 2025 By 三叶sanye</span><svg class="icon" aria-hidden="true"><use href="#icon-sanyecao"></use></svg></div><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, 1))
+  },
+  run: subtitleType => {
+    if (false) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      if (false) {
+        const from = '出自 ' + data.from
+        const sub = []
+        sub.unshift(data.hitokoto, from)
+        typedJSFn.init(sub)
+      } else {
+        document.getElementById('subtitle').textContent = data.hitokoto
+      }
+    })
+}
+typedJSFn.run(subtitleType)
+</script></div><script src="/js/time.js"></script><script src="/js/iconfont.js"></script><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="/js/busuanzi.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"display":{"position":"left","width":120,"height":240},"mobile":{"show":true},"react":{"opacity":0.7}});</script></body></html>
