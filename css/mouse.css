@@ -1,0 +1,9 @@
+body {
+  cursor: url("/img/ania_arrow.cur"),
+      default;
+}
+a,
+img {
+  cursor: url("/img/ania_link.cur"),
+      default;
+}

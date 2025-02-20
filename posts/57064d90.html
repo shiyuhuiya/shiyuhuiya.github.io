@@ -1,0 +1,1174 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>编译原理期末速成 | 三叶的博客</title><meta name="author" content="三叶sanye"><meta name="copyright" content="三叶sanye"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="个人观点:编译原理这门课的知识点是在是太抽象太晦涩，目前也想不出这门课的作用，以后也不会去写个编译器吧，未来找工作也大概率用不到，考研也不考，学的不扎实不用还会忘，争取会做题期末别挂就好，已经很不容易了🥲。   注意：若笔记中存在作者未发现的错误，望自行辨别😊  第一章：绪论翻译可分为编译和解释  编译： 程序到程序，把高级语言程序转换为低级语言程序 把源程序放入编译程序处理，得到目标代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编译原理期末速成">
+<meta property="og:url" content="https://www.sanye.blog/posts/57064d90.html">
+<meta property="og:site_name" content="三叶的博客">
+<meta property="og:description" content="个人观点:编译原理这门课的知识点是在是太抽象太晦涩，目前也想不出这门课的作用，以后也不会去写个编译器吧，未来找工作也大概率用不到，考研也不考，学的不扎实不用还会忘，争取会做题期末别挂就好，已经很不容易了🥲。   注意：若笔记中存在作者未发现的错误，望自行辨别😊  第一章：绪论翻译可分为编译和解释  编译： 程序到程序，把高级语言程序转换为低级语言程序 把源程序放入编译程序处理，得到目标代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.sanye.blog/images/cover/%E7%BA%B8%E9%A3%9E%E6%9C%BA.png">
+<meta property="article:published_time" content="2025-01-14T05:59:47.000Z">
+<meta property="article:modified_time" content="2025-02-15T11:46:01.240Z">
+<meta property="article:author" content="三叶sanye">
+<meta property="article:tag" content="编译原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.sanye.blog/images/cover/%E7%BA%B8%E9%A3%9E%E6%9C%BA.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.sanye.blog/posts/57064d90.html"><link rel="preconnect" href="//unpkg.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://unpkg.com/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+          
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-center"},
+  infinitegrid: {
+    js: 'https://unpkg.com/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '编译原理期末速成',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/bilibiliBanner.css"  media="defer" onload="this.media='screen'"><link rel="stylesheet" href="/css/mouse.css"><link rel="stylesheet" href="/css/time.css"><link rel="stylesheet" href="/css/iconfont.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="iron-container iron-circle"><div class="iron-box1 iron-circle iron-center"></div><div class="iron-box2 iron-circle iron-center"></div><div class="iron-box3 iron-circle iron-center"></div><div class="iron-box4 iron-circle iron-center"></div><div class="iron-box5 iron-circle iron-center"></div><div class="iron-box6 iron-circle"><div class="iron-coil" style="--i: 0"></div><div class="iron-coil" style="--i: 1"></div><div class="iron-coil" style="--i: 2"></div><div class="iron-coil" style="--i: 3"></div><div class="iron-coil" style="--i: 4"></div><div class="iron-coil" style="--i: 5"></div><div class="iron-coil" style="--i: 6"></div><div class="iron-coil" style="--i: 7"></div></div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/%E4%B8%89%E5%8F%B6.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/cover/纸飞机.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name iconfont icon-sanyecao">三叶的博客</span></a><a class="nav-page-title" href="/"><span class="site-name iconfont icon-sanyecao">编译原理期末速成</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">编译原理期末速成<a class="post-edit-link" href="https://github.com/shiyuhuiya/shiyuhuiya.github.io/issues_posts/编译原理期末速成.md" rel="external nofollow noreferrer" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-14T05:59:47.000Z" title="发表于 2025-01-14 13:59:47">2025-01-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-15T11:46:01.240Z" title="更新于 2025-02-15 19:46:01">2025-02-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%A7%91%E4%B8%93%E4%B8%9A%E6%A0%B8%E5%BF%83/">计科专业核心</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">13.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>43分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2025-02-15 19:46:01&quot;}" hidden></div><blockquote>
+<p>个人观点:编译原理这门课的知识点是在是太抽象太晦涩，目前也想不出这门课的作用，以后也不会去写个编译器吧，未来找工作也大概率用不到，考研也不考，学的不扎实不用还会忘，争取会做题期末别挂就好，已经很不容易了🥲。</p>
+</blockquote>
+<blockquote>
+<p>注意：若笔记中存在作者未发现的错误，望自行辨别😊</p>
+</blockquote>
+<h2 id="第一章：绪论"><a href="#第一章：绪论" class="headerlink" title="第一章：绪论"></a>第一章：绪论</h2><p><strong>翻译</strong>可分为<code>编译</code>和<code>解释</code></p>
+<ul>
+<li><p><strong>编译</strong>：</p>
+<p><strong>程序到程序</strong>，把<code>高级语言程序</code>转换为<code>低级语言程序</code></p>
+<p>把<code>源程序</code>放入<code>编译程序</code>处理，得到<code>目标代码</code></p>
+<ul>
+<li><p>编译后如果能直接运行，说明编译得到的是机器代码(就是0101)</p>
+</li>
+<li><p>编译后如果生成的是<code>汇编代码</code>，还要经过<code>汇编程序</code>编译，得到机器代码</p>
+</li>
+</ul>
+</li>
+<li><p>解释：</p>
+<p><strong>语句到语句</strong>，解释每一条语句并立马执行</p>
+</li>
+</ul>
+<p>我们重点要学习的就是<code>编译程序</code>，编译程序的构成包括，词法分析程序，语法分析程序，语义分析，中间代码生成，代码优化程序，目标代码生成。</p>
+<img src="..\images\编译原理\1.png" alt="image-20250106230540602" style="zoom:80%;" />
+
+<p><strong>简单的来说，编译过程可分为词法分析，语法分析，语义分析和中间代码生成，代码优化，目标代码生成</strong></p>
+<h2 id="第二章：高级语言及其语法描述"><a href="#第二章：高级语言及其语法描述" class="headerlink" title="第二章：高级语言及其语法描述"></a>第二章：高级语言及其语法描述</h2><p><strong>符号表</strong>，<strong>符号串</strong></p>
+<p><code>∑</code> &#x3D; {a,b}；<code>∑</code> (读作“西格玛”)，就是一个符号表或者说是一个<code>字母表</code>，即<code>字符</code>组成的<strong>集合</strong>。a,b组成的的字符串都是∑的<code>符号串</code>。<strong>ε</strong>(伊普西龙，Epsilon)，代表空串。</p>
+<p><strong>字符串集合</strong></p>
+<p><code>∑*</code>代表<code>∑</code>的闭包，即<code>∑（字母表）</code>能表示的所有<code>字符串</code>的集合，例如，如果<code>∑</code> &#x3D; {a,b}，则<code>∑*</code>&#x3D;{ε，a，b，aa，bb，ab，ba，…..}，</p>
+<p>等于<code>∑</code>的0，1，2，3….次幂（几次幂就做连接运算多少次）的<code>并集</code>，∑(字母表)的n次幂，就表示取n次∑中的元素能构成的字符串的<code>集合</code></p>
+<p>所以说<code>集合闭包</code>的结果也是<code>集合</code>。</p>
+<p><code>∑+</code>代表∑的<code>正闭包</code>，即除了<code>空串</code>以外的，<code>∑</code>能表示的所有<code>字符串</code>的集合，等于<code>∑</code>的1，2，3….次幂的<code>并集</code></p>
+<p><code>∑∑*</code>&#x3D;<code>∑*∑</code> &#x3D; <code>∑+</code></p>
+<p><code>∑+ ∪ &#123;ε&#125;</code>&#x3D;<code>∑*</code></p>
+<p><code>∅</code>表示一个什么都没有的集合，甚至连空串也没有。</p>
+<p><strong>集合运算</strong></p>
+<ul>
+<li><p>只要是集合，就有<code>乘积</code>运算，也叫做<code>连接</code>运算，字母表也有幂运算呢，就是做笛卡尔积。</p>
+<p>A ∅ &#x3D;  ∅A &#x3D;  ∅;任何<code>符号串集合</code>与空集的乘积都是空集。</p>
+<p>任何元素和<code>ε</code>的连接都是这个元素本身</p>
+<p>A集合与B集合的乘积也是<code>集合</code>，可以表示为， <code>AB = &#123;xy|x∈A&amp;&amp;y∈B&#125;</code>，可以看出来，<code>AB</code>不等于<code>BA</code>。</p>
+</li>
+<li><p>加法运算，其实就求集合的并集，或运算。<code>A+B = &#123;x|x∈A|x∈B&#125;</code></p>
+</li>
+<li><p>闭包运算，上面介绍过，不赘述</p>
+</li>
+</ul>
+<p><strong>运算优先级</strong></p>
+<p>闭包运算的优先级大于连接，连接运算优先级大于或运算。</p>
+<h3 id="文法和语言"><a href="#文法和语言" class="headerlink" title="文法和语言"></a><strong>文法和语言</strong></h3><h4 id="文法"><a href="#文法" class="headerlink" title="文法"></a><strong>文法</strong></h4><p>一个文法中，通常记为<code>G(S)</code>，其中S表示开始符号，包含一个或者多个<code>产生式</code>，形如<code>S-&gt;Ap </code></p>
+<p>产生式中包含<code>终结符</code>和<code>非终结符 </code>，其中大写字母为<code>非终结符</code>，小写字母为<code>终结符</code>，两者组合可以构成一个式子。<strong>单箭头</strong>代表<code>定义为</code>，后续我们还会常常用到<code>双箭头 ⇒</code>，表示<code>推导</code>， 不能混淆。</p>
+<p>文法定义的形式-四元组<code>（Vn,Vt,P,S）</code>: Vn为<code>非终结符集</code>，Vt 为<code>终结符集</code>(t指的是<code>terminal</code>，意为’’终端’’,’’终结’’)，P为<code>规则集</code>，即文法中所有<code>产生式</code>的集合，S为识别符（开始符），至少要在一个规则中作为<code>左部</code>出现，Vn ∩ Vt &#x3D; ∅。根据对文法施加不同的限制，分成4种类型。</p>
+<ul>
+<li><p>0型或短语文法：</p>
+<p>产生式形如：<code>α-&gt;β</code><br>解释：左边有<code>非终结符</code>就行，条件非常宽松<br>举例：A-&gt;ab， A-&gt;Cb， A-&gt;b<br>0型文法是这几个文法中，限制最少的一个，<strong>一般见到的文法都可看做0型文法</strong>。0型文法的能力相当于图灵机（Turing）。</p>
+</li>
+<li><p>1型文法：又称为<code>上下文有关文法</code>：</p>
+<p>产生式形如：<code>α-&gt;β</code><br>其中：<code>α-&gt;β</code>均满足|α|&lt;&#x3D;|β|, 除了α-&gt;ε外；<br>解释：式子左边可以有多个字符，但必须有一个<code>非终结符</code>，即满足0型文法；式子右边可以有多个字符，可以是终结符，也可以是非终结符，但必须是有限个字符，且<strong>左边长度必须小于等于右边</strong>。<br>举例：A-&gt;B，A-&gt;Bba</p>
+</li>
+<li><p>2型文法：<strong>上下文无关文法</strong></p>
+<p>在1型的约束上，产生式左部必须是<strong>一个</strong>非终结符号（只约束左部），右边可以是任意长度的字符串（包括空串）</p>
+<p>上下文无关文法的每个产生式的形式为 A→α，其中 A 是一个非终结符，而 α是由终结符<code>和/或</code>非终结符组成的字符串。</p>
+<p>因为替换规则的应用<code>不依赖于周围的符号</code>，即无论 A 出现在什么上下文中，都可以用 α替换它，所以被称为上下文无关语法。</p>
+</li>
+<li><p>3型文法：正规型文法</p>
+<p>正规文法又可分为两大类：</p>
+<p>右线性文法：产生式形如∶<code>A→aB|a</code>，其中a属于终结符，A，B属于<code>非终结符</code>;右边的字符串只能以一个<code>终结符</code>开头，后面最多跟随一个<code>非终结符</code>。因为产生的句子是从<code>左往右延长</code>的，所以叫做右线性文法</p>
+<p>左线性文法：产生式形如∶<code>A→Ba|a</code>，其中a属于终结符，A，B属于非终结符;因为产生的句子是<code>从右往左延长</code>的，所以叫做左线性文法。</p>
+<p>产生式右边只能包含<strong>最多一个</strong><code>非终结符</code>，而且只能出现在产生式的某一端（右线性在右边，左线性在左边），不能同时出现在两端。</p>
+</li>
+</ul>
+<h4 id="语言"><a href="#语言" class="headerlink" title="语言"></a><strong>语言</strong></h4><p>文法<code>G[s]</code>所产生的<code>句子</code>的全体<code>集合</code>，记为<code>L(G)</code>，简单来说，语言就是文法能表示的句子的集合。</p>
+<h4 id="语言和文法的关系"><a href="#语言和文法的关系" class="headerlink" title="语言和文法的关系"></a><strong>语言和文法的关系</strong></h4><p>一个确定的文法，语言集是唯一的；对于一个语言集，可能对应多种文法，也就是说，给出一个语言集，可能可以构造出多种文法。</p>
+<h4 id="语法分析树"><a href="#语法分析树" class="headerlink" title="语法分析树"></a><strong>语法分析树</strong></h4><p>语法分析树用<code>图形方式</code>展现了从文法的<code>开始符号</code>推导出相应语言中的<code>符号串(句子)</code>的过程。例如：</p>
+<p><code>S → SS+ | SS* |a</code></p>
+<p>使用该文法生成串<code>aa+a*</code>。</p>
+<p><code>S =&gt; SS* =&gt; SS+S* =&gt; aa+a*</code></p>
+<p>对应的语法分析树:</p>
+<img src="..\images\编译原理\2.png" style="zoom:50%;" />
+
+<h4 id="最左推导和最右推导"><a href="#最左推导和最右推导" class="headerlink" title="最左推导和最右推导"></a><strong>最左推导和最右推导</strong></h4><p>这两种推导方式的主要区别在于每次替换<code>非终结符</code>时的选择顺序。</p>
+<p>在最左推导中，每一步<code>总是</code>选择当前字符串中<code>最左边</code>的非终结符进行替换。</p>
+<p><code>E⇒E+E⇒i+E⇒i+i</code></p>
+<p>在最右推导中，每一步总是选择当前字符串中<code>最右边</code>的非终结符进行替换，最右推导也叫做<code>规范推导</code>，对应的就是<code>最左规约</code>，也叫规范规约，后面会介绍。</p>
+<p><code>E⇒E+E⇒E+i⇒i+i</code></p>
+<h4 id="语法分析树与二义性"><a href="#语法分析树与二义性" class="headerlink" title="语法分析树与二义性"></a><strong>语法分析树与二义性</strong></h4><p>如果一个文法中存在某个句子对应两棵不同的<code>语法树</code>，则称这个语法是<code>二义</code>的，也就是说，如果一个文法中存在某个句子，它有两个不同的最左推导，或者有两个不同的最右推导，则这个文法是二义的。</p>
+<p>如果文法G是无二义的，则它的任何句子的都有<code>唯一的最左推导</code>和<code>唯一的最右推导</code>，而且这两个推导对应的语法树相等。</p>
+<p>对于一个程序语言来说，我们常常希望它的文法是<code>无二义</code>的，因为我们希望对每个语句的分析是唯一的。文法的二义性是不可判定的，只能找出一个例子来证明是存在二义性的。</p>
+<h4 id="化简文法"><a href="#化简文法" class="headerlink" title="化简文法"></a>化简文法</h4><p>化简一个文法，主要从这几方面入手：</p>
+<ul>
+<li><p>找出S<code>永远无法推出</code>的非终结符，删除与这个非终结符有关的产生式</p>
+</li>
+<li><p>找出<code>永远无法结束</code>的非终结符，删除与这个非终结符有关的产生式</p>
+</li>
+<li><p>消除单产生式：</p>
+<p>任何产生式，具有 A -&gt; B 的形式(A, B ∈ <code>非终结符</code>) 就叫 <strong>单产生式</strong> 。</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">S → XY</span><br><span class="line">X → a</span><br><span class="line">Y → Z | b</span><br><span class="line">Z → M</span><br><span class="line">M → N</span><br><span class="line">N → a</span><br></pre></td></tr></table></figure>
+
+<p>用N → a消除M → N得到</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">M → a</span><br><span class="line">N → a</span><br></pre></td></tr></table></figure>
+
+<p>用M → a消除Z → M得到</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line">Z → a</span><br><span class="line">M → a</span><br><span class="line">N → a</span><br></pre></td></tr></table></figure>
+
+<p>用Z → a消除Y → Z得到</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Y → a | b</span><br><span class="line">Z → a</span><br><span class="line">M → a</span><br><span class="line">N → a</span><br></pre></td></tr></table></figure>
+
+<p>由于M,N,Z永远无法通过S到达，所以删除相关的产生式，最终得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S → XY</span><br><span class="line">X → a</span><br><span class="line">Y → a | b</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>消除空产生式</p>
+</li>
+</ul>
+<h3 id="句型和句子"><a href="#句型和句子" class="headerlink" title="句型和句子"></a>句型和句子</h3><p>文法<code>G[S]</code>，S是它的开始符，若S ⇒ α（经过0次或多次<code>推导</code>得出α）则称<code>α</code>是一个句型，仅含<code>终结符</code>的<code>句型</code>是一个<code>句子</code>。</p>
+<h3 id="常见题型"><a href="#常见题型" class="headerlink" title="常见题型"></a>常见题型</h3><h4 id="已知文法写语言，已知语言写文法"><a href="#已知文法写语言，已知语言写文法" class="headerlink" title="已知文法写语言，已知语言写文法"></a><strong>已知文法写语言，已知语言写文法</strong></h4><p><strong>1.</strong></p>
+<img src="..\images\编译原理\3.png" alt="image-20250107192422606" style="zoom: 67%;" />
+
+<p>（1）该语言可由产生式<code>S-&gt;aSb|ε</code>得到，为什么不是<code>S-&gt;abS|ε</code>呢？这样表示的字符串就是abab….，不是aa…bb…，字符串中的字符顺序不同，就是不同的字符串，或者说是不同的句子。</p>
+<p>根据这个产生式，我们就可以写出对应的文法，用四元式<code>(Vn,Vt,P,S)</code>来表示就是<code>(&#123;S&#125;,&#123;a,b,ε&#125;,&#123;S-&gt;aSb|ε&#125;,S)</code>，前三项都是集合。</p>
+<p>（3）对于左右两边的语言集合，同理我们可以得到产生式为<code>X-&gt;aXb|#</code>，<code>Y-&gt;cYd|#</code>只需要把<code>ε</code>替换为<code>#</code>就好了，然后把这两个产生式合并一下，<code>S-&gt;X|Y</code>，然后写出最终的文法就是<code>(&#123;S,X,Y&#125;,&#123;a,b,c,d,#&#125;,&#123;X-&gt;aXb|#,Y-&gt;cYd|#,S-&gt;X|Y&#125;,S)</code></p>
+<p>（5）要用文法表示一个奇数，且不以0开头（就是不能有多余的零），我们可以把这个问题转化成一个<code>正奇数</code>该如何表示，假设我们能用Z表示一个<code>正奇数</code>。则有<code>S-&gt;Z|-Z</code>，然后思考如何来表示一个正奇数。奇数可以有多位，我们先考虑如何表示<code>个位数</code>的奇数，很简单，假设A能表示个位数的奇数：<code>A-&gt;1|3|5|7|9</code>，然后考虑如何表示<code>十位数</code>的奇数；我们发现只要第一位不是0，第二位是个<code>奇数</code>，就能表示一个<code>十位数</code>的奇数，我们用<code>B</code>来表示一个不为0的个位数：<code>B-&gt;A|2|4|6|8</code>，则十位数的奇数能表示为<code>BA</code>，然后我们思考<code>百位数</code>的奇数如何表示，我们发现百位数的奇数中的十位数部分，可以是任何数，我们用<code>C</code>来表示：<code>C-&gt;B|0</code>，对于千位数以及更多位数，中间的数字都可以是任何数，我们都用C来表示。分析后我们可以写出如下推导：</p>
+<p><code>S-&gt;Z|-Z</code></p>
+<p><code>Z-&gt;A|BCA</code></p>
+<p><code>A-&gt;1|3|5|7|9</code></p>
+<p><code>B-&gt;A|2|4|6|8</code></p>
+<p><code>C-&gt;B|0|ε|CC</code>  其中<code>B|0</code>表示任何数字，<code>CC</code>表示位数的增加，<code>ε</code>用来去除一位。</p>
+<p>然后写出文法的四元式形式，<code>(&#123;S,Z,A,B,C&#125;,&#123;1,2,3,4,5,6,7,8,9,0,ε,+,-&#125;,&#123;S-&gt;Z|-Z,Z-&gt;A|BCA,A-&gt;1|3|5|7|9,B-&gt;A|2|4|6|8,C-&gt;B|0|ε|CC&#125;,S)</code></p>
+<p>这个由语言集构造文法的过程体现了分治的思想。</p>
+<h4 id="判断某个句子能否用给出的文法表示，如果能给出最左推导或者最右推导"><a href="#判断某个句子能否用给出的文法表示，如果能给出最左推导或者最右推导" class="headerlink" title="判断某个句子能否用给出的文法表示，如果能给出最左推导或者最右推导"></a><strong>判断某个句子能否用给出的文法表示，如果能给出最左推导或者最右推导</strong></h4><p>这种题就纯分析，尝试。</p>
+<h4 id="判断某个文法有无二义性"><a href="#判断某个文法有无二义性" class="headerlink" title="判断某个文法有无二义性"></a><strong>判断某个文法有无二义性</strong></h4><p>关键在于怎么找出一个句子，证明它文法是有二义性的，如果出了这种题，大概率文法是有二义性的，总不会让你找半天吧。</p>
+<img src="..\images\编译原理\4.png" alt="image-20250107155346669" style="zoom:80%;" />
+
+<p>没有算法能帮助我们判断，就只能观察法找特例了…</p>
+<p>比如这个例子，我们观察后可以发现abc这个句子，可以有不同的最右推导。</p>
+<p><code>S-&gt;AB-&gt;Abc-&gt;abc</code></p>
+<p><code>S-&gt;DC-&gt;Dc-&gt;abc</code></p>
+<h4 id="判断文法的类型"><a href="#判断文法的类型" class="headerlink" title="判断文法的类型"></a>判断文法的类型</h4><p>判断以下文法是0型、1型、2型、3型这四型文法中的哪一型文法</p>
+<p>G1[S]:  S→SA|aA；aA→a</p>
+<p>G2[S]:  S→SaA；AB→aB|AbB；B→cB|(S)|d|e</p>
+<p>G3[S]:  S→aA；A→bA|cA|b|c</p>
+<p>G4[S]:  S→aA|c；A→Bd；B→cS</p>
+<p>G1是______型文法；G2是______型文法；G3是______型文法；G4是______型文法。</p>
+<p><strong>解：</strong></p>
+<p>1型文法有长度要求，要求产生式左部符号长度小于等于右部，所以G1是0型文法</p>
+<p>2型文法要求产生式左部只有一个非终结符，所以G2是1型文法</p>
+<p>3型文法要求在2型文法的基础上，满足产生式右部只有一个终结符或者一个非终结符连带一个终结符。G3文法中的产生式都满足<code>右线性文法</code>，所以是3型文法。</p>
+<p>G4中的文法的所有产生式都满足了左线性或者右线性，但是没有<code>都满足左线性</code>或者<code>都满足右线性</code>，所以不是3型文法，是2型文法。</p>
+<h2 id="第三章：词法分析"><a href="#第三章：词法分析" class="headerlink" title="第三章：词法分析"></a>第三章：词法分析</h2><h3 id="词法分析器"><a href="#词法分析器" class="headerlink" title="词法分析器"></a>词法分析器</h3><p><strong>作用</strong></p>
+<p>也叫做<code>扫描器</code>，输入<code>源程序</code>，对源程序进行<code>词法分析</code>，输出<code>单词符号</code>，通常是二元式形式<code>(单词种别，单词符号的属性值)</code>，供<code>语法分析器</code>使用。</p>
+<p><strong>模式</strong></p>
+<ul>
+<li>完全独立模式：改进编译程序的效率、增强编译程序的可移植性、结构清晰、简化设计</li>
+<li>相对独立模式：词法分析器和语法分析器被设计在同一趟，省去了存放单词的中间文件。</li>
+</ul>
+<h3 id="正规文法和状态转换图"><a href="#正规文法和状态转换图" class="headerlink" title="正规文法和状态转换图"></a>正规文法和状态转换图</h3><p>多数程序设计语言的<code>单词语法</code>都能用<code>正规文法</code>来描述，也就是前面我们学习的<code>3型文法</code>。正规文法<code>描述</code>语言单词，状态转换图可<code>识别</code>单词，它们之间存在等价关系。</p>
+<h3 id="状态转换图"><a href="#状态转换图" class="headerlink" title="状态转换图"></a>状态转换图</h3><p>为了直观描述<code>正规文法</code>，以方便单词识别，引入<code>状态转换图</code>。</p>
+<p>一个状态转换图是由一组<code>矢线</code>连接的有限个节点所组成的<code>有向图</code></p>
+<p>每个节点均代表在识别或分析过程中<code>扫描器的状态</code>，其中有一个是<code>开始状态</code>(带箭头)，至少有一个状态是结束状态(双圈)。</p>
+<p>状态间用矢线连接，矢线上<code>标记有符号</code>，表示在矢线射出端的状态下，<code>读入</code>矢线上标记的符号，可转换到矢线指向的状态。</p>
+<h3 id="右线性文法构造状态转换图"><a href="#右线性文法构造状态转换图" class="headerlink" title="右线性文法构造状态转换图"></a>右线性文法构造状态转换图</h3><p>设<code>G=(Vn, Vt, P,S)</code>是一右线性文法, Vn中的每个<code>非终结符号</code>对应状态图中的一个<code>结点</code>，且G的开始符号S所标记的结点为<code>初态结点</code>;<br>增设一个不属于V(即Vn|Vt)的符号<code>F</code>标记终态结点。lVnl&#x3D;k，共有k+1个节点(状态）。</p>
+<p>对于G中的每一条形如<code>A→a</code>的规则，从结点A引一条矢线到终态结点<code>F</code>，并用符号<code>a</code>标记在这条矢线上<br>对于G中每一条形如<code>A→aB</code>的规则，从结点A引一条矢线到<br>结点B，并用符号<code>a</code>标记在这条矢线上。</p>
+<blockquote>
+<p>注意：若G中含有ε产生式A→ε,则将结点A设置为终态结点;</p>
+</blockquote>
+<img src="..\images\编译原理\5.png" alt="image-20250107192422606" style="zoom: 33%;" />
+
+<p>要注意的细节，起点要用<code>⇒</code>符号指明，终点要加<code>双圈</code>。</p>
+<p>学会画状态转化图，就很容易分析某个字符串是否能由某个<code>正规文法</code>表示。也能很容易的得出<code>推导过程</code>，利用状态图识别串的过程，也是为串建立一个推导的过程。</p>
+<h3 id="左线性文法构造状态转换图"><a href="#左线性文法构造状态转换图" class="headerlink" title="左线性文法构造状态转换图"></a>左线性文法构造状态转换图</h3><p>设<code>G=(Vn, Vt, P,S)</code>是一左线性文法，Vn中的每个<code>非终结符号</code>对应状态图中的一个<code>结点</code>。与右线性文法不同的是，增设一个不属于V的符号R标记<code>初态结点</code>，并用S作为<code>终态结点</code>。lVnl&#x3D;k，共有k+1个节点(状态）。</p>
+<p>对于G中的每一条形如<code>A→a</code>的规则，从<code>初态结点R</code>引一条矢线到结点A，并用符号a标记这条矢线，类似<code>A→Ra</code>，因为R是新增的 ，所以不会出现在产生式中。<br>对于G中每一条形如<code>A→Ba</code>的规则，从结点B引一条矢线到结点A，并用符号a标记这条矢线。</p>
+<p>如图： </p>
+<img src="..\images\编译原理\6.png"  style="zoom:33%;" />
+
+<p>左线性文法构造状态转换图比较反常识，需要注意。</p>
+<p>用左线性文法构造状态转换图来<code>识别字符串</code>的步骤和右线性文法的步骤相同。</p>
+<img src="..\images\编译原理\7.png" style="zoom:33%;" />
+
+
+
+<h3 id="有限自动机（FA）"><a href="#有限自动机（FA）" class="headerlink" title="有限自动机（FA）"></a>有限自动机（FA）</h3><h4 id="DFA"><a href="#DFA" class="headerlink" title="DFA"></a>DFA</h4><p><code>DFA</code>，即<code>确定的</code>有限自动机；是指在当前的状态下，输入一个符号，有限自动机将转换到<code>唯一</code>的后继状态。<strong>初态唯一</strong>，<code>终态</code>可以有多个。</p>
+<p>将前面介绍的<code>状态转换图</code>抽象,可得到一个确定的有限自动机M(记作DFA M)是一个<code>五元组</code>:M&#x3D;(K，∑，f，S，Z)<br>其中:</p>
+<p>K:是一个有限的<code>状态的集合</code>。<br>Z:是一个有限个<code>输入字符</code>组成的字母表<br>f:状态转换函数，<br>S:S∈K，是唯一的初始状态<br>Z：Z中包含<code>若干个</code>属于K的终结状态，无论有多少个终结状态都用<code>集合</code>表示。<br>可见，一个<code>确定的有限自动机</code>是相应的<code>状态图</code>的一种形式描述。</p>
+<img src="..\images\编译原理\8.png" alt="image-20250107223519897" style="zoom:33%;" />
+
+<h4 id="NFA"><a href="#NFA" class="headerlink" title="NFA"></a>NFA</h4><p><code>NFA</code>，即<code>不确定</code>的有限自动机；是指在当前的状态下，输入一个符号，可能有多种可选择的转换状态，即后继状态不唯一。与DFA相比，NFA的<code>初态</code>可能不唯一，而DFA的初态是唯一的，终态也可以有多个。</p>
+<h3 id="正规式和正规集"><a href="#正规式和正规集" class="headerlink" title="正规式和正规集"></a>正规式和正规集</h3><p><strong>是什么</strong></p>
+<p>正规式就是一个由一个或者多个<code>终结符</code>通过连接，闭包，或运算构成的表达式，类似编程语言中的<code>正则表达式</code>，用来匹配字符串。</p>
+<p><strong>优先级</strong></p>
+<p>在正规表达式中可使用的运算符有连接、或和闭包。</p>
+<p><code>闭包</code>优先级高于<code>连接</code>，而<code>连接</code>高于<code>或</code>，<code>()</code>调整优先权,使括号内的运算符优先权高于括号外的。</p>
+<p><strong>正规集</strong></p>
+<p>正规集就是<code>正规式</code>能表示的<code>语言集</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a*(a的闭包) = &#123;a^n|n≥0&#125;</span><br><span class="line">aa* = &#123;a^n|n≥1&#125;</span><br><span class="line">a|b = &#123;a,b&#125;</span><br><span class="line">a*b* = &#123;a^mb^n | m≥0,n&gt;=0&#125;</span><br><span class="line">(a|b)* = ε和任何长度的a,b符号串</span><br></pre></td></tr></table></figure>
+
+<p>两个正规式等价的必要条件是它们对应的正规集相等。 </p>
+<h3 id="正规文法转化成正规式"><a href="#正规文法转化成正规式" class="headerlink" title="正规文法转化成正规式"></a>正规文法转化成正规式</h3><p><code>正规式</code>在描述语言时比<code>正规文法</code>更为简洁。对于已给定的正规文法G，构造相应的正规式r，有Lr&#x3D;L(G)。</p>
+<img src="..\images\编译原理\9.png" alt="image-20250107235410910" style="zoom:80%;" />
+
+<p>正规文法转化成正规式的桥梁是<code>语言集</code>，正规式和正规文法都能表示一种语言，对于上述的三个产生式，我们是难以直接观察出它的语言集的。</p>
+<p>我们把<code>第二个产生式</code>带入<code>第三个产生式</code>：</p>
+<p><code>D-&gt;abD|bD|ε</code>，然后提取<code>公因式</code>，<code>D-&gt;(ab|b)D|ε</code>，然后我们就能轻松的得出这个产生式表示的语言，<code>&#123;(ab|b)^n|n&gt;=0&#125;</code>，用正规式表示就是<code>(ab|b)*</code>，即<code>D=(ab|b)*</code>，将其带入第二个产生式，有<code>C-&gt;b(ab|b)*</code>，即<code>C=b(ab|b)*</code> ，带入第一个产生式，有<code>A-&gt;ab(ab|b)*|bA</code>，转换成正规式就是<code>A=b*ab(ab|b)*</code>，就这样，通过合理的替换，我们就求出了所有<code>非终结符</code>表示的正规式，或者说语言集。</p>
+<h3 id="常见题型-1"><a href="#常见题型-1" class="headerlink" title="常见题型"></a>常见题型</h3><h4 id="已知文法写正规式，已知正规式画DFA"><a href="#已知文法写正规式，已知正规式画DFA" class="headerlink" title="已知文法写正规式，已知正规式画DFA"></a><strong>已知文法写正规式，已知正规式画DFA</strong></h4><p>如果已知文法，要求画<code>DFA</code>，直接画<code>状态转化图</code>就好，如果需要确定化则确定化</p>
+<p>例：给出正规式<code>R=(ab)*(a|b*)ba</code>等价的NFA</p>
+<img src="..\images\编译原理\53.jpg" style="zoom: 33%;" />
+
+<p>也是使用分治的思想，先把复杂的式子比如<code>(ab)*和(a|b*)</code>当做一个普通的符号，画出初始NFA，然后再把<code>ab</code>当作整体<code>处理闭包</code>，就是在对应位置插入一个状态结点，然后用ε连接；处理连接比如ab，处理或运算比如a|b，都是很简单的，看图就能看明白吧。</p>
+<p>如果遇到正闭包比如<code>a+</code>，建议转化成<code>aa*</code></p>
+<p>如果遇到可以明显简化的ε矢线，则可以选择简化，如果题目要求的是DFA，则做一次确定化。</p>
+<h4 id="NFA如何确定化，确定化后如何简化"><a href="#NFA如何确定化，确定化后如何简化" class="headerlink" title="NFA如何确定化，确定化后如何简化"></a>NFA如何确定化，确定化后如何简化</h4><p><strong>1.</strong></p>
+<img src="..\images\编译原理\10.png" alt="image-20250108181043305" style="zoom:50%;" />
+
+
+
+<p>（1）将NFA<strong>确定化</strong>为DFA，思路就是，使用子集法，<code>找出起点以及起点读入ε能到达的状态</code>，因为这道题中<code>起始状态0</code>不能通过ε到达其他状态，所以初始集合就是<code>&#123;0&#125;</code>，再找出<code>终结符</code>，然后观察起点通过各个终结符能分别到达什么状态，如果产出了<code>新状态</code>，则对新状态重复上述操作，直至不再产生新状态，画出表格如下图。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>{0}</td>
+<td>{0}</td>
+<td>{1}</td>
+</tr>
+<tr>
+<td>{1}</td>
+<td>{0 （2通过ε还能到达0）,2}</td>
+<td></td>
+</tr>
+<tr>
+<td>{0,2}</td>
+<td>{0.2}</td>
+<td>{1}</td>
+</tr>
+</tbody></table>
+<p>读入一个终结符如果到达的2个状态（后继不唯一），则合并为1个，所以起到了确定化的作用。</p>
+<p>我们把0标记为A，1标记为B，0,2标记为C，则有</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>B</td>
+<td>C</td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td>C</td>
+<td>B</td>
+</tr>
+</tbody></table>
+<p>画出DFA如图：</p>
+<img src="..\images\编译原理\11.jpg" alt="IMG_20250108_183629" style="zoom: 25%;" />
+
+<p>A状态的前身就是0，是开始状态，也是结束状态，所以A画双圈加箭头，</p>
+<p>因为<code>C状态</code>包含0，0先前是<code>终结状</code>，所以C状态也是终结状态，但不能再是开始状态，只能有一个DFA开始状态。</p>
+<p>（2）<code>最小化</code>DFA的思路就是，把DFA中的状态分为<code>终结状态</code>和<code>非终结状态</code>，然后让这个2个状态集合分别读入<code>非终结符</code>，看看是否都仍然在同一个状态集合，如果不是就要<code>拆分</code>状态集合。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>{A，C}</td>
+<td>{A，C}</td>
+<td>{B}</td>
+</tr>
+<tr>
+<td>{B}</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>A读入a在对应A状态，在{A,C}集合，C读入a对应C状态，在{A,C}集合；A读入b对应B状态，在{B}集合，C读入b对应B状态，在{B}集合，因此{A，C}集合中的所以状态是<strong>等价的</strong>，整个集合无需拆分。 </p>
+<p>简化后的DFA为：<img src="..\images\编译原理\12.png" alt="image-20250108190832896" style="zoom:25%;" /></p>
+<p>如果最终把一个状态集合拆分成<code>多个集合</code>，需要对新产生的集合重新读入所有非终结符，假如是在读入b的时候把集合拆分了，对于新的集合，还要从a开始读入。</p>
+<p>（3）描述该自动机表示的语言，就是由<code>自动机</code>推出<code>正规式</code>。</p>
+<p>观察图片可知，能表示的句子有<code>空串</code>，a,ba,aa,baba.aba,….. ,就是表示的语言集就是<code>(a|ba)*</code></p>
+<h4 id="已知正规式写出接受什么字符"><a href="#已知正规式写出接受什么字符" class="headerlink" title="已知正规式写出接受什么字符"></a>已知正规式写出接受什么字符</h4><p>就是根据正规式写出语言集。</p>
+<h2 id="第四章：语法分析—自上而下的分析法"><a href="#第四章：语法分析—自上而下的分析法" class="headerlink" title="第四章：语法分析—自上而下的分析法"></a>第四章：语法分析—自上而下的分析法</h2><h3 id="语法分析的两种方式"><a href="#语法分析的两种方式" class="headerlink" title="语法分析的两种方式"></a>语法分析的两种方式</h3><ul>
+<li><p>自上而下的分析法</p>
+<p>从文法的<code>开始符号</code>出发，反复使用文法的产生式，为待识别句子建立一个<code>最左推导</code>，以寻找与输入符号串匹配的<code>推导</code>。</p>
+</li>
+<li><p>自下而上的分析法</p>
+<p>从输入符号串开始，逐步进行<code>归约</code>，从叶子节点，由底向上逐步建立一棵完整的语法树，直至归约到文法的开始符号(树根)。</p>
+</li>
+</ul>
+<p><code>自上而下</code>的分析法比<code>自下而上</code>的分析法要容易理解，涉及到的文法也只有LL(1)文法，而<code>自下而上</code>的分析法虽说只涉及到<code>LR分析法</code>，但是<code>LR分析法</code>又有很多细分。</p>
+<h3 id="消除左递归"><a href="#消除左递归" class="headerlink" title="消除左递归"></a>消除左递归</h3><p>自顶向下分析方法的基本缺点不能处理具有<code>左递归</code>性的文法                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </p>
+<p><strong>直接左递归</strong><br>若<code>P→Pα|β</code>，比如左线性文法，就是左部的非终结符号出现右部第一位。</p>
+<p><strong>方法1</strong>：引入一元符号<code>&#123;&#125;</code></p>
+<p>例1:<code>S→Ac </code>；<code>A→Aa|b</code><br>改为:<code>S→AC</code>；<code>A→b&#123;a&#125;</code>，引入一元语言符号，{a}表示a可出现任意次。</p>
+<p>例2:<code>E→E+T|T</code>；<code>T-&gt;T*F|F</code><br>消除左递归:<code>E→T&#123;+T&#125;</code>；<code> T→F&#123;*F&#125;</code></p>
+<p><strong>方法2</strong>：引入一个非终结符</p>
+<p>我们使用一个<code>非终结符号</code>来替换上述的<code>一元符号</code>。</p>
+<p>比如<code>A→b&#123;a&#125;</code>可以写成<code>A→bA&#39;</code>，<code>A&#39;-&gt;aA&#39;|ε</code></p>
+<p>这样就把左线性文法改成了右线性文法</p>
+<p><strong>间接左递归</strong><br>例如:</p>
+<p><code>S→Aa</code><br><code>A→Sblb</code><br>要实行自顶向下分析，必须要消除文法的左递归，不仅消除直接左递归，而且消除<code>间接左递归</code>。</p>
+<p>要消除间接左递归，常用的方法是把<code>间接左递归</code>转化成<code>直接左递归</code>，然后消除直接左递归。</p>
+<img src="..\images\编译原理\13.png" alt="image-20250108222337971" style="zoom:40%;" />
+
+<img src="..\images\编译原理\14.png" alt="image-20250108223306476" style="zoom: 40%;" />
+
+<h3 id="消除回溯"><a href="#消除回溯" class="headerlink" title="消除回溯"></a>消除回溯</h3><p>分析过程是一种试探过程，是尽一切办法(选用不同规则)设法建立语法树的过程。由于是试探过程，故难免有失败，所以分析过程需进行<code>回溯</code>，因此我们也称这种方法是带<code>回溯</code>的自顶向下分析方法。</p>
+<p>选择<code>候选式</code>与候选式<code>首符号</code>或<code>非终结符后跟符号</code>有关，这就涉及到<code>First集</code>和<code>Follow集</code>的概念了。</p>
+<p>那该如何消除回溯呢？</p>
+<p><strong>方法1</strong>：提取左公因子</p>
+<img src="..\images\编译原理\15.png" alt="image-20250108225440951" style="zoom:33%;" />
+
+<img src="..\images\编译原理\16.png" alt="image-20250108225712643" style="zoom:33%;" />
+
+<blockquote>
+<p>值得注意的是，提取出公因子后，还要引入一个非终结符来表示合并的那部分，比如上题，不能只写成A-&gt;d(ε|e)|f，规范的写法要把(ε|e)单独拿出来</p>
+</blockquote>
+<h3 id="LL-1-文法"><a href="#LL-1-文法" class="headerlink" title="LL(1)文法"></a>LL(1)文法</h3><p><strong>LL(1)含义</strong></p>
+<p>L：从<code>左至右</code>顺序扫描输入串;<br>L：按<code>最左推导</code>方式;<br>1：每一次推导均向前查看<code>一个输入符号</code>，以便准确选择产生式。</p>
+<p><strong>LL(1)文法性质</strong></p>
+<ul>
+<li>没有公共左因子;</li>
+<li>无二义性，后面学到的文法都是无二义性的。</li>
+<li>不含左递归。</li>
+</ul>
+<p>对LL(1)文法，可构造一个无回溯自顶向下语法分析程序，方法为:</p>
+<ul>
+<li>递归下降法;</li>
+<li><strong>预测分析法，也叫LL(1)分析法</strong></li>
+</ul>
+<h4 id="递归下降法"><a href="#递归下降法" class="headerlink" title="递归下降法"></a>递归下降法</h4><p>对于每个非终结符号，都用一个<code>子分析程序</code>来表示。</p>
+<h4 id="LL-1-分析法"><a href="#LL-1-分析法" class="headerlink" title="LL(1)分析法"></a>LL(1)分析法</h4><p><code>LL(1)</code>分析方法是一种比递归子程序法<strong>更有效</strong>的<code>自顶向下</code>分析方法。<br><code>LL(1)</code>分析使用一个<code>下推栈</code>而不是<code>递归调用</code>来完成分析。</p>
+<p><strong>我们看看使用一个已经构建好的LL(1)分析表如何<code>预测</code>一个字符串是否能被接受</strong></p>
+<img src="..\images\编译原理\17.png" alt="image-20250109200946446" style="zoom:40%;" />
+
+<p><code>预测分析程序</code>就是使用一张<code>LL(1)分析表</code>和<code>一个符号栈</code>进行联合控制的。</p>
+<p>表格<code>顶行</code>表示所有的<code>非终结符</code>和<code>#</code>，不包括<code>ε</code>，表格左列表示所有<code>非终结状态</code>，而且预测过程始终只关心<code>符号栈顶</code>和<code>输入符号首部</code>，可以发现<code>LL(1)分析表</code>比后面要学到的<code>LR(0)分析表</code>简单的多🤣。</p>
+<p>初始状态栈为<code>#E</code>，其中<code>E</code>为<code>开始符号</code></p>
+<p>表格中的每个非空单元（x,y），比如（E,a），表示当栈顶元素是<code>E</code>的时候，要匹配的是<code>a</code>字符，需要使用<code>E-&gt;TE&#39;</code>这个推导，然后将<code>E</code>出栈，<code>TE&#39;</code><strong>逆序入栈</strong>（因为使用最左推导嘛，要分析的是T，需要让T是栈顶元素，后面讲第五章<code>LR文法</code>的时候，入栈的只会是单个终结符或者非终结符，不需要考虑是否逆序）。如果栈顶符号是<code>终结符</code>且匹配了<code>待匹配字符</code>，则出栈这个<code>终结符</code>并开始匹配下一个字符。</p>
+<p>如果<code>预测</code>一个字符串能否被指定文法表示，需要画出<code>LL(1)分析表</code>，如果我们这个表都画错了，那分析的过程肯定也就会出错。</p>
+<p><strong>那该如何根据一个<code>LL(1)文法</code>画一个LL(1)分析表呢？</strong></p>
+<p>画出一个文法对应的LL（1）分析表，需要借助<code>First集</code>和<code>Follow集</code>。</p>
+<img src="..\images\编译原理\18.png" alt="image-20250109203102159" style="zoom:40%;" />
+
+<p>error就是在表格中<code>空着</code></p>
+<p><strong>注:</strong></p>
+<ul>
+<li>用<code>LL(1)分析表构造算法</code>可以为<code>任意文法G</code>构造其分析表</li>
+<li>若文法为<code>非LL(1)文法</code>，则构造出的分析表包含有<code>多重元素</code>。则分析过程有<code>回溯</code>，因此我们也可以通过构建<code>LL(1)分析表</code>判断是否有多重元素的方式来判断一个文法是不是LL(1)文法，一个LL(1)文法是无回溯，无左递归，无二义的。</li>
+</ul>
+<p>我们来看看下面这道例题</p>
+<img src="..\images\编译原理\19.png" alt="image-20250109212035256" style="zoom: 40%;" />
+
+<p>如何构建First集和Follow集合可以参考本章中<code>常见习题</code>部分，这里已经给出了。</p>
+<p>我们从每个<code>非终结符</code>的First集，Follow集<code>出发</code>填写对应单元格，而不是查看每个单元格是否有对应的<code>产生式</code>。</p>
+<p>比如，先查看E的First集，找出相匹配的单元格，然后找出First集合中的每个终结符可以由哪个产生式（当然是左部是E的产生式啦）得出。然后再查看Follow集，找出相匹配的单元格，然后如果存在<code>E-&gt;ε</code>的产生式，则将这些匹配的单元格都填入<code>E-&gt;ε</code>。</p>
+<p>其他行（其他非终结符）也使用这套规则来构建分析表。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>+</th>
+<th>*</th>
+<th>(</th>
+<th>)</th>
+<th>i</th>
+<th><code>#</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E</td>
+<td></td>
+<td></td>
+<td><code>E-&gt;TE&#39;</code></td>
+<td></td>
+<td><code>E-&gt;TE&#39;</code></td>
+<td></td>
+</tr>
+<tr>
+<td>E’</td>
+<td><code>E&#39;-&gt;+TE&#39;</code></td>
+<td></td>
+<td></td>
+<td><code>E&#39;-&gt;ε</code></td>
+<td></td>
+<td><code>E&#39;-&gt;ε</code></td>
+</tr>
+<tr>
+<td>T</td>
+<td></td>
+<td></td>
+<td><code>T-&gt;FT&#39;</code></td>
+<td></td>
+<td><code>T-&gt;FT&#39;</code></td>
+<td></td>
+</tr>
+<tr>
+<td>T’</td>
+<td><code>T&#39;-&gt;ε</code></td>
+<td><code>T&#39;-&gt;*FT&#39;</code></td>
+<td></td>
+<td><code>T&#39;-&gt;ε</code></td>
+<td></td>
+<td><code>T&#39;-&gt;ε</code></td>
+</tr>
+<tr>
+<td>F</td>
+<td></td>
+<td></td>
+<td><code>F-&gt;(E)</code></td>
+<td></td>
+<td><code>F-&gt;i</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="常见习题"><a href="#常见习题" class="headerlink" title="常见习题"></a>常见习题</h3><h4 id="消除左递归-1"><a href="#消除左递归-1" class="headerlink" title="消除左递归"></a>消除左递归</h4><p>消除左递归的思路就是先求出左线性文法能表示的<code>语言</code>，然后用等价的<code>右线性文法</code>表示。如果是间接左递归，则先将间接左递归转化成直接左递归。</p>
+<h4 id="消除回溯-1"><a href="#消除回溯-1" class="headerlink" title="消除回溯"></a>消除回溯</h4><p>消除回溯的思路就是提取左公因子，见上述介绍。</p>
+<h4 id="求First和Follow集合"><a href="#求First和Follow集合" class="headerlink" title="求First和Follow集合"></a>求First和Follow集合</h4><p><strong>求First集合</strong></p>
+<p>我们一般求的是某个非终结符的<code>First</code>集，终结符的First集合就是本身，例如{a}</p>
+<p>步骤就是查看所有产生式的左边，找出所有非终结符，找出每个非终结符的First集合</p>
+<p>对于每个非终结符，找出<code>左部</code>包含该终结符的产生式，查看右边能推出的第一个<code>终结符</code>，把它纳入First集</p>
+<p>如果右部推出的是非终结符，则<code>递归查找</code>。</p>
+<img src="..\images\编译原理\20.png" alt="image-20250109172915164" style="zoom: 67%;" />
+
+<p>对于第一题，求First(A)，查找左部是A的产生式，能推出的表达式的第一个终结符。a，ε，c都满足，即<code>First(A)=&#123;a，ε，c&#125;</code></p>
+<p>对于第二题，求First(A)，将第二个产生式带入第一个产生式，有<code>A-&gt;ba</code>，所以<code>First(A)=&#123;b&#125;</code></p>
+<p>对于第三题，求First(A)，将第二个产生式带入第一个产生式，有<code>A-&gt;bc|c</code>，所以<code>First(A)=&#123;b,c&#125;</code></p>
+<p>对于第四题，求First(A)，将第二，三个产生式带入第一个产生式，有<code>A-&gt;(b|ε)(c|ε)</code>，括号表示是一个整体，<strong>列举所有情况</strong>，可以发现<code>First(A)=&#123;b,c,ε&#125;</code></p>
+<p><strong>求Follow集合</strong></p>
+<p>一般要求求某个非终结符的<code>Follow</code>集，</p>
+<p>步骤就是查看所有产生式，找出<code>右边</code>包含所求非终结符的产生式，再进一步分析。</p>
+<img src="..\images\编译原理\21.png" alt="image-20250109172224055" style="zoom:40%;" />
+
+<p>对于（1）的解释，S是文法的开始符号，如果<strong>不做任何推导</strong>，S尾部就啥也没有，那就是#&#96;</p>
+<p>对于（2）的解释。如果<code>β</code>是<code>终结符</code>，则直接把<code>β</code>纳入<code>Follow(A)</code>，如果β是<code>非终结符</code>，且<code>First(β)</code>既包含<code>ε</code>又包含<code>其他终结符</code>，则<code>First(β)-&#123;ε&#125;</code>集合中的元素，都可以成为A的直接后继终结符，也就是<code>First(β)-&#123;ε&#125;</code>中的元素可以被纳入<code>Follow(A)</code>。当<code>First(β)</code>取<code>ε</code>，假设B有自己的<code>Follow(B) = &#123;a,b,c&#125;</code>，也就是B后面可能还跟着<code>a,b,c</code>，当我们把<code>B</code>替换为<code>αAβ</code>，<code>β</code>又取<code>ε</code>，即<code>αAβ=αA</code>，此时B的<code>直接后继终结符</code>不就是A的<code>直接后继非终结符</code>了吗，所以我们把<code>FOLLOW(B)</code>加至<code>FOLLOW(A)</code>中。</p>
+<p>对于（3）的解释，看对（2）的解释就好了。</p>
+<p>看下面的例子</p>
+<img src="..\images\编译原理\22.png" alt="image-20250109180305639" style="zoom:50%;" />
+
+
+
+<p>我们先求各个终结符的First集合，再求Follow集合。</p>
+<p><code>First(S)=&#123;a,d&#125;</code>，非常简单；<code>First(A)=&#123;B,ε&#125;</code>，非常简单。</p>
+<p>然后我们按照上述的构造方法，先写出<code>Follow(S)=&#123;#&#125;</code></p>
+<p>然后求<code>Follow(A)</code>，观察上述产生式，由<code>S-&gt;aA</code>，有<code>Follow(A)</code>&#x3D;<code>Follow(A)∪Follow(S)</code></p>
+<p>由<code>A-&gt;bAS</code>，得出<code>First(S)-&#123;ε&#125;</code>也应当包含在<code>Follow(A) </code>，此处<code>First(S)</code>中不包含<code>ε</code>还好，如果包含<code>ε</code>，那么<code>A-&gt;bAS</code>可以看成<code>A-&gt;bA</code>，即<code>Follow(A)</code>应该包含在<code>Follow(A)</code>中，显然也是没什么意义。</p>
+<p>最终得到<code>Follow(A)=&#123;#,a,d&#125;</code></p>
+<p>然后继续完善<code>Follow(S)</code></p>
+<p>由<code>A-&gt;bAS</code>，可知<code>Follow(A)</code>应当包含在<code>Follow(S)</code>中，即<code>Follow(S)=&#123;#,a,d&#125;</code></p>
+<p>解答完毕。</p>
+<h4 id="画出预测分析表-LL-1-分析表"><a href="#画出预测分析表-LL-1-分析表" class="headerlink" title="画出预测分析表(LL(1)分析表)"></a>画出预测分析表(LL(1)分析表)</h4><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">设有文法：G[S]:  S-&gt; aBc | bAB</span><br><span class="line"></span><br><span class="line">          A-&gt;aAb | b</span><br><span class="line"></span><br><span class="line">          B-&gt;b |ε     </span><br><span class="line"></span><br><span class="line">（1）给出所有非终结符的First集和Follow集；</span><br><span class="line"></span><br><span class="line">（2）构造其LL(1)分析表，并分析符号串babb是否是该文法的句子。</span><br></pre></td></tr></table></figure>
+
+<p>(1)First(S)&#x3D;{a,b}    Frist(A)&#x3D;{a,b}    First(B)&#x3D;{b,ε }</p>
+<p>  Follow(S)&#x3D;{<code>#</code>}    Follow(A)&#x3D;{b,<code>#</code>}  Follow(B)&#x3D;{c,<code>#</code>}</p>
+<p>(2)</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>#</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S</td>
+<td>S-&gt; aBc</td>
+<td>S-&gt;bAB</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td>A-&gt;aAb</td>
+<td>A-&gt;b</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td>B-&gt;b</td>
+<td>B-&gt;ε</td>
+<td>B-&gt;ε</td>
+</tr>
+</tbody></table>
+<p>(3)开始分析符号串babb</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>符号栈</th>
+<th>输入串</th>
+<th>所用规则</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>#S</td>
+<td>babb#</td>
+<td>S-&gt;bAB</td>
+</tr>
+<tr>
+<td>1</td>
+<td>#BAb</td>
+<td>babb#</td>
+<td>匹配，b出栈</td>
+</tr>
+<tr>
+<td>2</td>
+<td>#BA</td>
+<td>abb#</td>
+<td>A-&gt;aAb</td>
+</tr>
+<tr>
+<td>3</td>
+<td>#BbAa</td>
+<td>abb#</td>
+<td>匹配，a出栈</td>
+</tr>
+<tr>
+<td>4</td>
+<td>#BbA</td>
+<td>bb#</td>
+<td>A-&gt;b</td>
+</tr>
+<tr>
+<td>5</td>
+<td>#Bbb</td>
+<td>bb#</td>
+<td>匹配，b出栈</td>
+</tr>
+<tr>
+<td>6</td>
+<td>#Bb</td>
+<td>b#</td>
+<td>匹配，b出栈</td>
+</tr>
+<tr>
+<td>7</td>
+<td>#B</td>
+<td>#</td>
+<td>B-&gt; ε</td>
+</tr>
+<tr>
+<td>8</td>
+<td>#</td>
+<td>#</td>
+<td>匹配</td>
+</tr>
+<tr>
+<td></td>
+<td>分析成功</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="什么是LL（1）文法"><a href="#什么是LL（1）文法" class="headerlink" title="什么是LL（1）文法"></a>什么是LL（1）文法</h4><h2 id="第五章：语法分析-自下而上分析"><a href="#第五章：语法分析-自下而上分析" class="headerlink" title="第五章：语法分析-自下而上分析"></a>第五章：语法分析-自下而上分析</h2><h3 id="短语，直接短语，句柄-，最左素短语"><a href="#短语，直接短语，句柄-，最左素短语" class="headerlink" title="短语，直接短语，句柄 ，最左素短语"></a>短语，直接短语，句柄 ，最左素短语</h3><p>定义：</p>
+<img src="..\images\编译原理\23.png" alt="image-20250109230646760" style="zoom:50%;" />
+
+<p>看不懂思密达，直接看例题吧</p>
+<img src="..\images\编译原理\24.png" alt="image-20250109230646760" style="zoom:67%;" />
+
+<p>求一个句型的<code>短语</code>，先要画出这个句型对应的<code>语法分析树</code>，这个句型的<code>短语</code>就是<code>所有子树</code>的<code>叶子结点的连接</code>，注意<code>叶子结点</code>本身不属于子树。我们发现，这个句型的短语都是这个句型的一部分或者就是这个句型。</p>
+<p><code>简单短语</code>也叫<code>直接短语</code>，就是<code>高度不超过2</code>的子树，对应的短语。</p>
+<p><code>句柄</code>就是<code>简单短语</code>中，最左边的部分。</p>
+<p>一个句型的直接短语可以有多个，而<code>句柄</code>只有一个。</p>
+<p>最左素短语就是句型<code>最左部分</code>，能被<code>规约</code>的<code>最小子串</code>，此处的最左素短语就是F。</p>
+<h3 id="自下而上的分析"><a href="#自下而上的分析" class="headerlink" title="自下而上的分析"></a>自下而上的分析</h3><p>从输入串开始，逐步进行归约，直到文法开始符号。问题是如何进行规约呢？</p>
+<p>由于从左至右扫描符号串，因此在被归约句型中找<code>句柄</code>进行<code>归约</code>。<br>所以归约总是<code>执行规范</code>(最左)归约。</p>
+<img src="..\images\编译原理\25.png" style="zoom: 67%;" />
+
+<p>给出这个符号串的<code>最右推导</code>：</p>
+<img src="..\images\编译原理\52.png" alt="image-20250110221010104" style="zoom:67%;" />
+
+<p>画出<code>语法分析树</code>：</p>
+<img src="..\images\编译原理\26.png" style="zoom:33%;" />
+
+
+
+<p>找出这个句子的<code>句柄</code>，就是最底部的<code>b</code>，也就是a<code>b</code>bcde，中的第二个字符</p>
+<p>然后使用<code>A-&gt;b</code>进行规约，得到<code>aAbcde</code>，然后继续找这个句型的<code>句柄</code>，即<code>Abc</code>，然后使用<code>A-&gt;Abc</code>进行规约，得到<code>aABe</code>，</p>
+<p>然后继续寻找<code>句柄</code>，使用<code>S-&gt;aABe</code>进行规约，最终得到S。</p>
+<p>下面给出了一个字符串的<code>规范规约</code>过程，下面这个例子默认<code>句柄</code>已经确定，是通过画语法分析树确定的。</p>
+<img src="..\images\编译原理\27.png" alt="image-20250110200244063" style="zoom:40%;" />
+
+<p>大致过程:把输入符号逐个移进到一个栈里，当<code>栈顶</code>形成个产生式的右部(<code>句柄</code>)时，把栈顶的这一部分替换成<br>(归约为)它的<code>左部符号</code>。称作“移进-归约”分析，重复上述操作，如果符号栈变为<code>#S</code>，则表示匹配成功。</p>
+<p>可以看到，符号栈<code>初始状态</code>为<code>#</code>，也是从<code>左到右</code>扫描字符串。</p>
+<p>分析过程的每一步，<code>栈中符号串</code>与<code>剩余输入符号串</code>恰是一个<code>规范句型</code>。且栈中符号串为该句型的一个<code>活前缀</code></p>
+<p><code>活前缀</code>是<code>规范句型</code>的一个<code>前缀</code>，且不含<code>句柄之后</code>的任何符号。</p>
+<p>就拿第一个例子来说，a<code>b</code>bcde-&gt;<code>aAbcde</code>中，第二个<code>b</code>是句柄，<code>aAbcde</code>就是<code>规范句型</code>，<code>aA</code>就是<code>活前缀</code>，这个概念在后续构建LR分析表中还会用到。</p>
+<h3 id="规范规约"><a href="#规范规约" class="headerlink" title="规范规约"></a>规范规约</h3><p>规范归约的中心问题是:<strong>如何寻找或确定某个句型的句柄</strong>?我们可以通过画语法分析树(如果文法无二义，画出语法分析树就是唯一的)确定句柄，除此之外还可借助其他算法。不同确定句柄方法得到不同的<code>自底向上分析算法</code>。</p>
+<ul>
+<li><strong>优先分析法</strong><ul>
+<li>简单优先分析法</li>
+<li>算符优先分析算法（每次规约的是<code>最左素短语</code>）</li>
+</ul>
+</li>
+<li><strong>LR分析法（重点掌握）</strong><ul>
+<li>LR(0)分析法</li>
+<li>SLR(0)分析法</li>
+<li>LR(1)分析法</li>
+<li>LALR(1)分析法</li>
+</ul>
+</li>
+</ul>
+<h3 id="LR分析法"><a href="#LR分析法" class="headerlink" title="LR分析法"></a>LR分析法</h3><p>我们先体会一下构造好<code>LR分析表</code>后，如何分析一个字符串。</p>
+<p>可以看到<code>LR分析表</code>的组成包括<code>状态</code>，<code>ACTION表</code>，<code>GOTO表</code>三部分。</p>
+<p>ACTION表中包含的都是<code>终结符号</code>，GOTO表中包含的都是一些<code>非终结符号</code></p>
+<img src="..\images\编译原理\28.png" alt="image-20250110215727027" style="zoom:33%;" />
+
+
+
+<p>开始分析，画出<strong>分析表</strong>，包含<code>状态栈</code>，<code>符号栈</code>，<code>输入串</code>，<code>动作</code>，其中<code>状态栈</code>是先前没有讲过，初始状态栈只包含0，符号栈只包含<code>#</code>。</p>
+<p>对于每行中的<strong>动作</strong>，我们通过查看<code>状态栈</code>顶部元素，与<code>输入串</code>首部符号，再结合<code>ACTION</code>表，来确定。</p>
+<p>当发生<code>规约</code>的时候，<code>非终结符</code>入符号栈，我们查看<code>状态栈</code>顶部元素，和<code>符号栈</code>顶部，再结合<code>GOTO</code>表，确定同时要入<code>状态栈</code>的<code>状态</code></p>
+<p>执行每行中的动作，得到下一行的<code>状态栈</code>，<code>符号栈</code>，<code>输入串</code>。</p>
+<p>我们来分析下表</p>
+<img src="..\images\编译原理\29.png" alt="image-20250110215804308" style="zoom:40%;" />
+
+<p>分析第一行动作，按规则查ACTION表得到S5，表示当前状态栈顶是<code>0</code>，<code>输入串</code>首部字符是<code>i</code>时，<code>符号栈</code>移进<code>i</code>，转移到状态5，将5纳入状态栈。填写第二行中<code>状态栈</code>，<code>符号栈</code>，<code>输入串</code></p>
+<p>然后分析第二行的动作，按规则查ACTION表得到<code>r6</code>，表示使用6号产生式进行规约，将i规约为F，符号栈中的i出栈，F入栈，i出栈，则对应的状态5也要出栈，然后F入栈，查找此时<code>状态栈</code>栈顶，为0，再查看GOTO表，发现要将3状态纳入状态栈，最终得到第三行的</p>
+<p><code>状态栈</code>，<code>符号栈</code>，<code>输入串</code>，然后重复上述过程。</p>
+<p>总的来说要注意的就是：</p>
+<ul>
+<li><p>初始我们只能写出第一行的<code>状态栈</code>，<code>符号栈</code>，<code>输入串</code>，初始状态栈只包含0，符号栈只包含<code>#</code></p>
+</li>
+<li><p>然后通过查看<code>状态栈</code>顶部元素，与<code>输入串</code>首部符号，再结合<code>ACTION</code>表，来确定第一行的动作</p>
+</li>
+<li><p>如果动作是<code>移进</code>，就把对应的<code>状态</code>移入<code>状态栈</code>，对应的<code>字符</code>移入<code>符号栈</code>，输入串则<code>删除首部字符</code>。</p>
+</li>
+<li><p>如果动作是<code>规约</code>，则就要将对应的符号<code>出栈</code>，同时状态栈也要<code>同步</code>弹出相应的元素，然后再将<code>非终结符</code>入栈</p>
+</li>
+<li><p>将非终结符入栈，就需要查看<code>状态栈顶</code>的元素，结合入栈的非终结符和GOTO表，确定<code>同步</code>入状态栈的状态。</p>
+</li>
+<li><p>也就是说，如果是<code>规约</code>的话，确定下一行的<code>状态栈</code>，<code>符号栈</code>还需要看一次GOTO表</p>
+</li>
+<li><p>简单的来说就是，符号栈入栈的是终结符，不要查看GOTO表，入栈的是非终结符，说明发生了规约，需要查看GOTO表。</p>
+</li>
+</ul>
+<p>那这个LR分析表该如何构造呢？</p>
+<h4 id="LR-0-分析表"><a href="#LR-0-分析表" class="headerlink" title="LR(0)分析表"></a><strong>LR(0)分析表</strong></h4><p>LR(0)分析，指在分析的每一步，只根据当前的<code>状态栈顶状态</code>就能确定应采取何种分析动作，无需向前查看<code>输入符号</code>。</p>
+<p>构造LR(0)分析表的步骤就是：<code>拓广文法-&gt;列项目-&gt;项目集规范簇-&gt;画分析表</code>。</p>
+<img src="..\images\编译原理\30.png" alt="image-20250111160924245" style="zoom: 33%;" />
+
+<img src="..\images\编译原理\31.png" alt="image-20250111161401246" style="zoom: 50%;" />
+
+<img src="..\images\编译原理\32.png" alt="image-20250111162124539" style="zoom:33%;" />
+
+<p><code>E‘-&gt;E</code>就是拓广文法得到的产生式</p>
+<p>不同产生式的<code>LR(0)项目</code>的数量不同，一般越长项目越多。</p>
+<p>对于每个产生式，我们都先把<code>圆点</code>放到产生式右部的<code>首部</code>，然后不断往后移，每次移动都得到新的<code>LR(0)</code>项目，直至无法再往后移动。</p>
+<p>其中红色方框的是<code>待规约项目</code>，绿色方框的是<code>移进项目</code>，蓝色的是<code>规约项目</code>，粉色的是<code>接受项目</code>。</p>
+<p>我们来看下面这道例题：</p>
+<img src="..\images\编译原理\33.png" alt="image-20250111172957492" style="zoom:33%;" />
+
+<p>针对<code>T-&gt;T*F</code>构造项目集，首先可以得到的是<code>T-&gt;·T*F</code>，然后由于圆点后面是非终结符T，所以还可以把T的项目<code>T-&gt;·F</code>纳入，又因为这个项目的圆点后面是F，所以再纳入F的2个项目（如图所示），由于这2个项目中圆点后面是终结符，所以不会继续派生。</p>
+<p>这样就得到一个项目集<code>I1</code>，也可以看作一个<code>状态</code>，然后从这个项目集中的每个项目（产生式）出发，读入圆点后面的符号，得到新的项目集合，并重复上述的规则不断派生项目。</p>
+<p>显然，对于项目集<code>I4</code>，还可以像<code>I1</code>一样，通过读入符号产生更多的项目集。</p>
+<p>看看如下例题，体会如何构造<code>项目集规范簇</code>，这个作图的过程也可以叫做<code>画出识别该文法活前缀的完整DFA</code></p>
+<img src="..\images\编译原理\34.png" alt="image-20250111182944002" style="zoom:40%;" />
+
+<p><strong>根据上述项目集规范簇画出LR(0)分析表：</strong></p>
+<p><code>I0</code>读入a，状态转移为<code>I2</code>，则再ACTION表中填入<code>S2</code>；读入S，状态转移为<code>I1</code>，我们在GOTO表中填入1；读入b，状态转移为<code>I3</code>，填入<code>S3</code>。</p>
+<p><code>I1</code>状态本身是规约项，更是<strong>接受项</strong>，我们在ACTION表中的<code>#</code>列填入<code>acc</code></p>
+<p><code>I2</code>读入A转移到<code>I4</code>，我们在GOTO表中填入4；读入c，转移到<code>I5</code>，我们在ACTION表中填入<code>S5</code>；读入d转移到<code>I6</code>，我们在ACTION表中填入<code>S6</code></p>
+<p><code>I3，I5</code>同理。</p>
+<p>I4本身就是规约项，对应产生式（1），我们在GOTO表中的所有位置填入<code>r1</code></p>
+<p><code>I6,I7,I9,I10,I11</code>同理。</p>
+<p>之所以<code>I1</code>状态是的编号是1，是因为这个状态是由<code>I0</code>读入S推导出来的，对应的项目（产生式）顺序是1。</p>
+<p>下面的表格第一列是<code>状态</code>，后面的分别是<code>ACTION</code>表，和<code>GOTO</code>表，可以观察到<code>S&#39;</code>，<strong>这个为了拓广文法的非终结符不包含在GOTO表。</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+<th>d</th>
+<th>#</th>
+<th>S</th>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>S2</td>
+<td>S3</td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>acc</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+<td>S8</td>
+<td>S9</td>
+<td></td>
+<td></td>
+<td></td>
+<td>7</td>
+</tr>
+<tr>
+<td>4</td>
+<td>r1</td>
+<td>r1</td>
+<td>r1</td>
+<td>r1</td>
+<td>r1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+<td></td>
+<td>S5</td>
+<td>S6</td>
+<td></td>
+<td></td>
+<td>10</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>r4</td>
+<td>r4</td>
+<td>r4</td>
+<td>r4</td>
+<td>r4</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>r2</td>
+<td>r2</td>
+<td>r2</td>
+<td>r2</td>
+<td>r2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+<td></td>
+<td>S8</td>
+<td>S9</td>
+<td></td>
+<td></td>
+<td></td>
+<td>11</td>
+</tr>
+<tr>
+<td>9</td>
+<td>r6</td>
+<td>r6</td>
+<td>r6</td>
+<td>r6</td>
+<td>r6</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>r3</td>
+<td>r3</td>
+<td>r3</td>
+<td>r3</td>
+<td>r3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>r5</td>
+<td>r5</td>
+<td>r5</td>
+<td>r5</td>
+<td>r5</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<img src="..\images\编译原理\35.png" alt="image-20250111200737251" style="zoom:33%;" />
+
+<p>如果一个状态（项目集）中（假如是状态5）存在第一种情况，假如我们先处理第一个产生式，读入a，则会在ACTION表中对应位置填入一个状态，假设为S6，然后我们处理第二个产生式，则会在ACTION表中的<code>所有项</code>填入rx，这就冲突了，所以一个LR(0)项目集中不能同时存在<code>移进项</code>和<code>规约项</code>。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>a</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5</td>
+<td>S6</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>第二种情况同理，也存在覆盖&#x2F;冲突。</p>
+<img src="..\images\编译原理\36.png" alt="image-20250111203146087" style="zoom:33%;" />
+
+<p>说白了就是LR(0)分析表不考虑当前输入符号的问题。</p>
+<p><strong>如果存在上述冲突，则说明这个文法不是LR(0)文法。</strong></p>
+<h4 id="SLR-1-分析表"><a href="#SLR-1-分析表" class="headerlink" title="SLR(1)分析表"></a>SLR(1)分析表</h4><p>构造<code>SRL(1)分析表</code>与构造<code>LR(0)分析表</code>的区别在于，对于规约项，比如<code>E-&gt;e</code>不再是将ACTION表中的<code>所有项</code>（所有终结符）都填入<code>E-&gt;e</code>，而是在<code>E</code>这个非终结符的<code>Follow</code>集合中的所有终结符的位置填入<code>E-&gt;e</code>。</p>
+<p>这两种分析表使用的<code>规范簇</code>也是一样的，最后来分析某个字符串的<code>步骤</code>也是一样的。</p>
+<p>注意：</p>
+<img src="..\images\编译原理\37.png" alt="image-20250111213225903" style="zoom:33%;" />
+
+<p>然而，即便减少了规约项在ACTION表中占据的项数，还是存在冲突的问题。</p>
+<p>具体是为什么就需要深究了，下面给出了解决办法，搞明白具体为什么也要花蛮多时间的。</p>
+<img src="..\images\编译原理\38.png" alt="image-20250111225331624" style="zoom:33%;" />
+
+<h4 id="LR-1-分析表"><a href="#LR-1-分析表" class="headerlink" title="LR(1)分析表"></a>LR(1)分析表</h4><img src="..\images\编译原理\39.png" alt="image-20250111225749147" style="zoom: 33%;" />
+
+<p>可以看出构造<code>LR(1)分析表</code>，需要我们构造<code>新的项目集规范簇</code>，而<code>SLR(1)</code>分析表可以使用<code>LR(0)</code>的项目集规范簇。</p>
+<p><strong>LR（1）项目的定义</strong></p>
+<img src="..\images\编译原理\40.png" alt="image-20250111230248385" style="zoom: 50%;" />
+
+<p>看不懂思密达，直接看例题吧</p>
+<img src="..\images\编译原理\41.png" alt="image-20250111231833618" style="zoom: 67%;" />
+
+<p>而在<code>状态转移</code>的时候，二元式的第二项是直接继承的，如图</p>
+<img src="..\images\编译原理\42.png" alt="image-20250111233406654" style="zoom: 50%;" />
+
+<p>画好<code>LR(1)规范簇</code>后，就可以构造<code>LR(1)分析表</code>了。</p>
+<img src="..\images\编译原理\43.png" alt="image-20250111234244981" style="zoom:40%;" />
+
+<p>构造<code>LR(1)分析表</code>和构造前<code>2个分析表</code>的步骤其实都差不多，3个表的区别都只在于对于<code>规约项</code>的处理方式，构造LR(1)分析表的时候，对于规约项只参考二元式的第二个参数。</p>
+<p>若文法<code>G’</code>构造出的LR(1)分析表不含多元素(没有冲突)，则文法G’是LR(1文法。<br>注:</p>
+<p>1)每个<code>LR(1)</code>文法都是<code>SLR(1)</code>文法，反之不一定成立;</p>
+<p>2)一个<code>LR(1)</code>分析表比其<code>SLR(1)</code>分析表含有更多状态。严重情况下，状态数可能成倍增长。因此需要简化，而<code>LALR(1)</code>方法就能起到简化的效果。</p>
+<h4 id="LALR-1-分析表"><a href="#LALR-1-分析表" class="headerlink" title="LALR(1)分析表"></a>LALR(1)分析表</h4><img src="..\images\编译原理\44.png" alt="image-20250112172925188" style="zoom:33%;" />
+
+<p>合并<code>同心集</code>可达到缩小构造分析表的<code>状态数目</code>;利用核代替项目集可以达到缩小项目集所占用的存储空间。介<br>绍两种方法:<code>第一种方法</code>:对于G，构造LR(1)项目集规范族(DFA)，然后，合并同心集，若合并后的同心集中没<br>有<code>移进归约冲突</code>，则用其构造LR分析表，这种分析表称作<code>LALR</code>分析表。</p>
+<ul>
+<li>合并状态的步骤是，合并（并集）二元式右部的参数，然后迁移状态转移关系。就和简化状态图一样。</li>
+</ul>
+<h2 id="第六章：属性文法和语法制导翻译"><a href="#第六章：属性文法和语法制导翻译" class="headerlink" title="第六章：属性文法和语法制导翻译"></a>第六章：属性文法和语法制导翻译</h2><img src="..\images\编译原理\45.png" alt="image-20250112183353780" style="zoom:33%;" />
+
+<h3 id="翻译"><a href="#翻译" class="headerlink" title="翻译"></a>翻译</h3><p><strong>翻译的任务</strong>:</p>
+<p>首先是语义分析和正确性检查，若正确则翻译成<code>中间代码</code>或<code>目标代码</code>。<br><strong>使用的方法</strong>：</p>
+<p>语法制导翻译。在语法分析过程中进行<code>语义处理</code>的翻译技术。<br><strong>基本思想</strong>：</p>
+<p>根据翻译的需要设置文法符号的属性，以描述语法结构的语义。即<code>语法制导翻译法</code>使用<code>属性文法</code>为工具来描述程序设计语言的语义。</p>
+<h3 id="属性文法"><a href="#属性文法" class="headerlink" title="属性文法"></a>属性文法</h3><p><strong>属性</strong></p>
+<p>对文法的每一个<code>符号</code>，引进一些与文法符号相关的信息：如类型、值、存储位置等，称为属性。属性的值，可以在<br>语法分析过程中计算和传递。<code>属性加工</code>的过程即是<code>语义的处理</code>过程。</p>
+<p>属性分为两类:<code>综合属性</code>和<code>继承属性</code></p>
+<p>综合属性是来自于<code>子节点</code>属性或<code>自己的属性</code></p>
+<p>继承属性来自于<code>父节点与兄弟节点</code></p>
+<p><strong>属性文法</strong></p>
+<p>属性文法包含一个<code>上下文无关文法</code>和一系列<code>语义规则</code><br>语义规则：为文法的每一个产生式配备的计算属性的计算规则。(描述语义处理的加工动作)。这些<code>语义规则</code>附在文法的每个<code>产生式</code>上，在语法分析过程中，执行语义规则描述的动作，从而实现语义处理，即附在文法的每个产生式上的语义规则描述了语义处理的加工动作。</p>
+<p><strong>属性文法的三元组定义</strong></p>
+<p>A&#x3D;(G，V，F)，G:是一个上下文无关文法<br>V:有穷属性集，每个属性与文法的一终结符或非终结符相连，<br>F:关于属性的属性断言或谓词集，每个断言与一个产生式相联一个断言即一个语义规则，描述各属性关系。<br>属性文法的<code>主要思想</code>:</p>
+<ul>
+<li>对于每个<code>文法符号</code>引进相关的<code>属性符号</code>:</li>
+<li>对于每个产生式写出属性值计算的规则。</li>
+</ul>
+<p>这概念真tm抽象直接看例题😒。</p>
+<p><strong>1.</strong></p>
+<img src="..\images\编译原理\46.png" alt="image-20250112185717617" style="zoom:33%;" />
+
+<img src="..\images\编译原理\47.png" alt="image-20250112190022258" style="zoom:50%;" />
+
+
+
+<p><strong>2.</strong></p>
+<img src="..\images\编译原理\48.png" alt="image-20250112190859622" style="zoom:50%;" />
+
+
+
+<p>输入表达式<code>2+3*5</code>，其实对应的就是<code>digit+digit*digit</code>，我们先推出这个句子的产生式，再按顺序赋值即可。</p>
+<img src="..\images\编译原理\49.png" alt="image-20250112191258165" style="zoom:33%;" />
+
+<p>上述属性文法是从下往上得到的，也就是说只有<code>综合属性</code>。</p>
+<img src="..\images\编译原理\50.png" alt="image-20250112191931568" style="zoom:33%;" />
+
+<p>先画出句子<code>acaab</code>的语法分析树，该如何画呢？如果这个文法不具有二义性，那么只要画出来了就是唯一的，然后使用<code>最左规约</code>，每使用一次产生式进行<code>规约</code>，就执行一次对应的<code>语义规则</code>，最终得到的输出结果是<code>423231</code>。</p>
+<h3 id="语法制导翻译"><a href="#语法制导翻译" class="headerlink" title="语法制导翻译"></a><strong>语法制导翻译</strong></h3><p>在语法分析过程中，依随分析的过程，根据每个产生式所对应的语义子程序(语义规则描述的语义处理的加工动作)进行<br>翻译的方法。</p>
+<p>只含有<code>综合属性</code>的称为S一属性文法<br>综合属性可以在分析输入符号串的同时采用<code>自下而上</code>的分析器来计算。<br>S一属性文法的<code>翻译器</code>很容易建立。通常可借助于<code>LR分析器</code>实现。</p>
+<h2 id="第七章：语义分析和中间代码的产生"><a href="#第七章：语义分析和中间代码的产生" class="headerlink" title="第七章：语义分析和中间代码的产生"></a>第七章：语义分析和中间代码的产生</h2><p>语义分析的的基本功能包括：确定类型，类型检查，语义处理，和某些静态语义检查。</p>
+<p>中间代码生成”任务：把经过<code>语法分析</code>和<code>语义分析</code>而获得的源程序翻译为<code>中间代码</code>表示。</p>
+<p>中间代码表示形式有:</p>
+<ul>
+<li>语法树</li>
+<li>后缀式</li>
+<li>三地址代码表示(三元式、四元式)</li>
+</ul>
+<img src="..\images\编译原理\51.png" alt="image-20250112202330098" style="zoom:33%;" />
+
+
+
+<p>后缀表达式也叫做<code>逆波兰表达式</code>。</p>
+<h3 id="逆波兰表达式"><a href="#逆波兰表达式" class="headerlink" title="逆波兰表达式"></a>逆波兰表达式</h3><p>也称为<code>后缀表达式</code>，是一种不需要<code>括号</code>来表示<code>运算优先级</code>的数学表达式表示法。在逆波兰表达式中，操作符总是位于其操作数之后。这种表达式的优点是可以简化计算过程，并且很容易通过<code>栈</code>结构实现解析和求值。</p>
+<p>假设我们要将<code>中缀表达式(5 + 3) * 12 / 3</code>（中缀表达式就是我们日常生活中常见的表达式） 转换为<code>逆波兰表达式</code>：</p>
+<p>得到的逆波兰表达式为：<code>5 3 + 12 * 3 /</code></p>
+<p>匹配到5，入栈，匹配到3，入栈，匹配到+，弹出2个元素，对它们求和，将得到的结果入栈，然后匹配到12，入栈，然后匹配到*，弹出2个元素，对它们求积，将得到的结果入栈，然后匹配到&#x2F;，弹出2个元素，对他们求商。</p>
+<p>例题：</p>
+<p>给出一个中缀表达式<code>w+(a+b)*(c+d/(e-10)+8)</code>，求出它的后缀表达式：</p>
+<p>我们令<code>y=(a+b)*(c+d/(e-10)+8)</code>，问题就变为求<code>w+y</code>的后缀表达式，很简单的得到<code>wy+</code></p>
+<p>然后我们继续求解y的后缀表达式，令<code>m=(a+b)</code>，<code>n=(c+d/(e-10)+8)</code>，则y的后缀表达式就是<code>mn*</code></p>
+<p>m的后缀表达式可以快速得到为<code>ab+</code>，我们令<code>k=d/(e-10)</code>，则n的后缀表达式就是<code>ck+8+</code>，</p>
+<p>k的后缀表达式可以快速得到为<code>de10-/</code></p>
+<p>综上，我们再通过代换，得到最终的后缀表达式是<code>wab+cde10-/+8+*+</code></p>
+<h3 id="三元式，四元式"><a href="#三元式，四元式" class="headerlink" title="三元式，四元式"></a>三元式，四元式</h3><img src="..\images\编译原理\54.png" alt="image-20250114125045875" style="zoom:33%;" />
+
+<img src="..\images\编译原理\55.png" alt="image-20250114125531966" style="zoom:33%;" />
+
+<p>可以看出，三元式类似“前缀表达式”。</p>
+<p>我们来看一道例题 </p>
+<img src="..\images\编译原理\56.png" style="zoom:67%;" />
+
+<p>先写出逆波兰表达式：</p>
+<p><code>a(a+b)*c*</code> -&gt; <code>aab+*c*</code></p>
+<p>最后还要记得补上<strong>赋值运算</strong>，<code>xaab+*c*=</code></p>
+<p>再写出三元式：</p>
+<p>(1)<code>(+,a,b)</code></p>
+<p>(2)<code>(*,a,(1))</code></p>
+<p>(3)<code>(*,(2),c)</code></p>
+<p>(4)<code>(=,x,(3))</code></p>
+<p>再写出四元式：</p>
+<p>(1)<code>(+,a,b,T1)</code>，T就是temp的首字母大写，表示临时变量</p>
+<p>(2)<code>(*,a,T1,T2)</code></p>
+<p>(3)<code>(*,T2,c,T3)</code></p>
+<p>(4)<code>(=,T3,_,x)</code>，这里比较特殊了，不是<code>(=,x,T3,x)</code>，</p>
+<ul>
+<li>**<code>= </code>**：赋值操作符。</li>
+<li>**<code>T3</code>**：第一个操作数，即源位置，表示从这里取值。</li>
+<li>**<code>_</code>**：占位符，表示没有第二个操作数。</li>
+<li>**<code>x</code>**：结果位置，即将 <code>T3</code> 的值赋给这个变量。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.sanye.blog">三叶sanye</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.sanye.blog/posts/57064d90.html">https://www.sanye.blog/posts/57064d90.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noreferrer" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://www.sanye.blog" target="_blank">三叶的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">编译原理</a></div><div class="post-share"><div class="social-share" data-image="/images/cover/%E7%BA%B8%E9%A3%9E%E6%9C%BA.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://unpkg.com/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://unpkg.com/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/4618cb0a.html" title="微信小程序"><img class="cover" src="/images/cover/violet.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">微信小程序</div></div><div class="info-2"><div class="info-item-1"> 微信小程序有自己开发框架，并且和我们熟悉的vue或者react框架的语法，api区别还是蛮大的，学习成本不低，个人不推荐花太多时间去学习，更推荐uni-app（使用vue的语法开发web应用并多端发布）这类的框架，使用我们熟悉的框架语法开发，还能轻松实现多端发布。当然，wx小程序的知识中也有许多是通用的。  说说你对微信小程序的理解？优缺点？是什么2017年，微信正式推出了小程序，允许外部开发者在微信内部运行自己的代码，开展业务 截至目前，小程序已经成为国内前端的一个重要业务，跟 Web 和手机 App 有着同等的重要性 小程序是一种不需要下载安装即可使用的应用（但实际上还是存在一个轻量级的下载和安装流程，不过用户感知不到），它实现了应用“触手可及”的梦想，用户扫一扫或者搜一下即可打开应用 也体现了“用完即走”的理念，用户不用关心是否安装太多应用的问题。应用将无处不在，随时可用，但又无需安装卸载 注意的是，除了微信小程序，还有百度小程序、微信小程序、支付宝小程序、抖音小程序，都是每个平台自己开发的，都是有针对性平台的应用程序 背景小程序并非凭空冒出来的⼀个概念，当微信中的...</div></div></div></a><a class="pagination-related" href="/posts/d73c0d37.html" title="前端面试---ES6"><img class="cover" src="/images/cover/%E9%9F%B6%E5%8D%8E%E5%88%9D%E9%9F%B3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">前端面试---ES6</div></div><div class="info-2"><div class="info-item-1">var,let,const有哪些区别在ES5中，顶层对象（在浏览器中是window）的属性和全局变量是等价的，或者说全局变量会被挂载到window对象中  变量提升 var声明的变量存在变量提升，变量提升只提升变量声明，不提升变量赋值。而let和const不存在变量提升  重复声明 var声明的变量可以被重复声明，后面声明的会覆盖前面声明的。而let和const声明的变量无法被重复声明。  作用域 var声明的变量只会产生函数作用域，不会产生块级作用域 let用来声明一个变量，会产生一个块级作用域， const用来声明一个常量，也会产生一个块级作用域。   变量提升与函数提升只有var声明的变量才存在变量提升，只有具名函数才存在函数提升。 函数提升优先级比变量提升要高，且不会被变量声明覆盖，但是会被变量赋值覆盖。 12345console.log(foo);//输出函数ƒ foo()&#123;...&#125;function foo()&#123;    console.log(&quot;函数声明&quot;);&#125;var foo =...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/%E4%B8%89%E5%8F%B6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">三叶sanye</div><div class="author-info-description">记录学习，分享知识</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><div class="card-info-social-icons"><a class="social-icon" href="https://space.bilibili.com/660655866?spm_id_from=333.1007.0.0" rel="external nofollow noreferrer" target="_blank" title="Bilibli"><i class="fa-brands fa-bilibili" style="color: #74C0FC;"></i></a><a class="social-icon" href="https://github.com/syhy" rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3519450570@qq.com" rel="external nofollow noreferrer" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">笔记主要自用，希望也能帮到你😀</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">第一章：绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E5%8F%8A%E5%85%B6%E8%AF%AD%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">第二章：高级语言及其语法描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%B3%95%E5%92%8C%E8%AF%AD%E8%A8%80"><span class="toc-number">2.1.</span> <span class="toc-text">文法和语言</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E6%B3%95"><span class="toc-number">2.1.1.</span> <span class="toc-text">文法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80"><span class="toc-number">2.1.2.</span> <span class="toc-text">语言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E5%92%8C%E6%96%87%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.1.3.</span> <span class="toc-text">语言和文法的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E6%A0%91"><span class="toc-number">2.1.4.</span> <span class="toc-text">语法分析树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%B7%A6%E6%8E%A8%E5%AF%BC%E5%92%8C%E6%9C%80%E5%8F%B3%E6%8E%A8%E5%AF%BC"><span class="toc-number">2.1.5.</span> <span class="toc-text">最左推导和最右推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E6%A0%91%E4%B8%8E%E4%BA%8C%E4%B9%89%E6%80%A7"><span class="toc-number">2.1.6.</span> <span class="toc-text">语法分析树与二义性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%96%E7%AE%80%E6%96%87%E6%B3%95"><span class="toc-number">2.1.7.</span> <span class="toc-text">化简文法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%A5%E5%9E%8B%E5%92%8C%E5%8F%A5%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">句型和句子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%A2%98%E5%9E%8B"><span class="toc-number">2.3.</span> <span class="toc-text">常见题型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E6%96%87%E6%B3%95%E5%86%99%E8%AF%AD%E8%A8%80%EF%BC%8C%E5%B7%B2%E7%9F%A5%E8%AF%AD%E8%A8%80%E5%86%99%E6%96%87%E6%B3%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">已知文法写语言，已知语言写文法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E5%8F%A5%E5%AD%90%E8%83%BD%E5%90%A6%E7%94%A8%E7%BB%99%E5%87%BA%E7%9A%84%E6%96%87%E6%B3%95%E8%A1%A8%E7%A4%BA%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%83%BD%E7%BB%99%E5%87%BA%E6%9C%80%E5%B7%A6%E6%8E%A8%E5%AF%BC%E6%88%96%E8%80%85%E6%9C%80%E5%8F%B3%E6%8E%A8%E5%AF%BC"><span class="toc-number">2.3.2.</span> <span class="toc-text">判断某个句子能否用给出的文法表示，如果能给出最左推导或者最右推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%96%87%E6%B3%95%E6%9C%89%E6%97%A0%E4%BA%8C%E4%B9%89%E6%80%A7"><span class="toc-number">2.3.3.</span> <span class="toc-text">判断某个文法有无二义性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%96%87%E6%B3%95%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.4.</span> <span class="toc-text">判断文法的类型</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">第三章：词法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">词法分析器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%A7%84%E6%96%87%E6%B3%95%E5%92%8C%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE"><span class="toc-number">3.2.</span> <span class="toc-text">正规文法和状态转换图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE"><span class="toc-number">3.3.</span> <span class="toc-text">状态转换图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B3%E7%BA%BF%E6%80%A7%E6%96%87%E6%B3%95%E6%9E%84%E9%80%A0%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE"><span class="toc-number">3.4.</span> <span class="toc-text">右线性文法构造状态转换图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A6%E7%BA%BF%E6%80%A7%E6%96%87%E6%B3%95%E6%9E%84%E9%80%A0%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE"><span class="toc-number">3.5.</span> <span class="toc-text">左线性文法构造状态转换图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E6%9C%BA%EF%BC%88FA%EF%BC%89"><span class="toc-number">3.6.</span> <span class="toc-text">有限自动机（FA）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DFA"><span class="toc-number">3.6.1.</span> <span class="toc-text">DFA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NFA"><span class="toc-number">3.6.2.</span> <span class="toc-text">NFA</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%A7%84%E5%BC%8F%E5%92%8C%E6%AD%A3%E8%A7%84%E9%9B%86"><span class="toc-number">3.7.</span> <span class="toc-text">正规式和正规集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%A7%84%E6%96%87%E6%B3%95%E8%BD%AC%E5%8C%96%E6%88%90%E6%AD%A3%E8%A7%84%E5%BC%8F"><span class="toc-number">3.8.</span> <span class="toc-text">正规文法转化成正规式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%A2%98%E5%9E%8B-1"><span class="toc-number">3.9.</span> <span class="toc-text">常见题型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E6%96%87%E6%B3%95%E5%86%99%E6%AD%A3%E8%A7%84%E5%BC%8F%EF%BC%8C%E5%B7%B2%E7%9F%A5%E6%AD%A3%E8%A7%84%E5%BC%8F%E7%94%BBDFA"><span class="toc-number">3.9.1.</span> <span class="toc-text">已知文法写正规式，已知正规式画DFA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NFA%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%8C%96%EF%BC%8C%E7%A1%AE%E5%AE%9A%E5%8C%96%E5%90%8E%E5%A6%82%E4%BD%95%E7%AE%80%E5%8C%96"><span class="toc-number">3.9.2.</span> <span class="toc-text">NFA如何确定化，确定化后如何简化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%B2%E7%9F%A5%E6%AD%A3%E8%A7%84%E5%BC%8F%E5%86%99%E5%87%BA%E6%8E%A5%E5%8F%97%E4%BB%80%E4%B9%88%E5%AD%97%E7%AC%A6"><span class="toc-number">3.9.3.</span> <span class="toc-text">已知正规式写出接受什么字符</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E2%80%94%E8%87%AA%E4%B8%8A%E8%80%8C%E4%B8%8B%E7%9A%84%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">第四章：语法分析—自上而下的分析法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语法分析的两种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E5%B7%A6%E9%80%92%E5%BD%92"><span class="toc-number">4.2.</span> <span class="toc-text">消除左递归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E5%9B%9E%E6%BA%AF"><span class="toc-number">4.3.</span> <span class="toc-text">消除回溯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LL-1-%E6%96%87%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">LL(1)文法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-number">4.4.1.</span> <span class="toc-text">递归下降法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LL-1-%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">4.4.2.</span> <span class="toc-text">LL(1)分析法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E4%B9%A0%E9%A2%98"><span class="toc-number">4.5.</span> <span class="toc-text">常见习题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E5%B7%A6%E9%80%92%E5%BD%92-1"><span class="toc-number">4.5.1.</span> <span class="toc-text">消除左递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E9%99%A4%E5%9B%9E%E6%BA%AF-1"><span class="toc-number">4.5.2.</span> <span class="toc-text">消除回溯</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%82First%E5%92%8CFollow%E9%9B%86%E5%90%88"><span class="toc-number">4.5.3.</span> <span class="toc-text">求First和Follow集合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%BB%E5%87%BA%E9%A2%84%E6%B5%8B%E5%88%86%E6%9E%90%E8%A1%A8-LL-1-%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-number">4.5.4.</span> <span class="toc-text">画出预测分析表(LL(1)分析表)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFLL%EF%BC%881%EF%BC%89%E6%96%87%E6%B3%95"><span class="toc-number">4.5.5.</span> <span class="toc-text">什么是LL（1）文法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-%E8%87%AA%E4%B8%8B%E8%80%8C%E4%B8%8A%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text">第五章：语法分析-自下而上分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%AD%E8%AF%AD%EF%BC%8C%E7%9B%B4%E6%8E%A5%E7%9F%AD%E8%AF%AD%EF%BC%8C%E5%8F%A5%E6%9F%84-%EF%BC%8C%E6%9C%80%E5%B7%A6%E7%B4%A0%E7%9F%AD%E8%AF%AD"><span class="toc-number">5.1.</span> <span class="toc-text">短语，直接短语，句柄 ，最左素短语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E4%B8%8B%E8%80%8C%E4%B8%8A%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text">自下而上的分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E8%8C%83%E8%A7%84%E7%BA%A6"><span class="toc-number">5.3.</span> <span class="toc-text">规范规约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LR%E5%88%86%E6%9E%90%E6%B3%95"><span class="toc-number">5.4.</span> <span class="toc-text">LR分析法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LR-0-%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-number">5.4.1.</span> <span class="toc-text">LR(0)分析表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SLR-1-%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-number">5.4.2.</span> <span class="toc-text">SLR(1)分析表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LR-1-%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-number">5.4.3.</span> <span class="toc-text">LR(1)分析表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LALR-1-%E5%88%86%E6%9E%90%E8%A1%A8"><span class="toc-number">5.4.4.</span> <span class="toc-text">LALR(1)分析表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E5%B1%9E%E6%80%A7%E6%96%87%E6%B3%95%E5%92%8C%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="toc-number">6.</span> <span class="toc-text">第六章：属性文法和语法制导翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91"><span class="toc-number">6.1.</span> <span class="toc-text">翻译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E6%96%87%E6%B3%95"><span class="toc-number">6.2.</span> <span class="toc-text">属性文法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%B6%E5%AF%BC%E7%BF%BB%E8%AF%91"><span class="toc-number">6.3.</span> <span class="toc-text">语法制导翻译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0%EF%BC%9A%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%A3%E7%A0%81%E7%9A%84%E4%BA%A7%E7%94%9F"><span class="toc-number">7.</span> <span class="toc-text">第七章：语义分析和中间代码的产生</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">7.1.</span> <span class="toc-text">逆波兰表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%85%83%E5%BC%8F%EF%BC%8C%E5%9B%9B%E5%85%83%E5%BC%8F"><span class="toc-number">7.2.</span> <span class="toc-text">三元式，四元式</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/518e617c.html" title="git"><img src="/images/cover/dog.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="git"/></a><div class="content"><a class="title" href="/posts/518e617c.html" title="git">git</a><time datetime="2025-02-09T08:07:36.000Z" title="发表于 2025-02-09 16:07:36">2025-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/e255a10a.html" title="计算机网络"><img src="/images/cover/maomao.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机网络"/></a><div class="content"><a class="title" href="/posts/e255a10a.html" title="计算机网络">计算机网络</a><time datetime="2025-02-07T15:08:21.000Z" title="发表于 2025-02-07 23:08:21">2025-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/4b0178e0.html" title="数据结构与算法"><img src="/images/cover/%E7%A7%98%E5%AF%86%E9%A3%8E%E6%99%AF.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据结构与算法"/></a><div class="content"><a class="title" href="/posts/4b0178e0.html" title="数据结构与算法">数据结构与算法</a><time datetime="2025-02-07T14:48:29.000Z" title="发表于 2025-02-07 22:48:29">2025-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d04bd5bc.html" title="操作系统"><img src="/images/cover/%E6%98%9F%E7%A9%BA.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="操作系统"/></a><div class="content"><a class="title" href="/posts/d04bd5bc.html" title="操作系统">操作系统</a><time datetime="2025-02-06T15:49:56.000Z" title="发表于 2025-02-06 23:49:56">2025-02-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8b27fabc.html" title="vue"><img src="/images/cover/preview.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue"/></a><div class="content"><a class="title" href="/posts/8b27fabc.html" title="vue">vue</a><time datetime="2025-01-25T14:00:18.000Z" title="发表于 2025-01-25 22:00:18">2025-01-25</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/images/cover/1.png);"><div id="footer-wrap"><div class="footer_custom_text"><div id="sanye"><svg class="icon" aria-hidden="true"><use href="#icon-banquan"></use></svg><span>2024 - 2025 By 三叶sanye</span><svg class="icon" aria-hidden="true"><use href="#icon-sanyecao"></use></svg></div><div id="runtime"></div></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://unpkg.com/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script src="/js/time.js"></script><script src="/js/iconfont.js"></script><script defer="defer" id="ribbon" src="https://unpkg.com/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://unpkg.com/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://unpkg.com/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="/js/busuanzi.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"display":{"position":"left","width":120,"height":240},"mobile":{"show":true},"react":{"opacity":0.7}});</script></body></html>

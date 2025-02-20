@@ -1,0 +1,31 @@
+div#runtime {
+  width: fit-content;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+/* 还做了夜间模式适配？ */
+[data-theme="dark"] div#runtime {
+  color: #28b4c8;
+  box-shadow: 0 0 5px rgba(28, 69, 218, 0.5);
+}
+/* 这是声明作者部分 */
+#sanye{
+  width: fit-content;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0 10px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+/* 这是图标部分的样式 */
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
