@@ -1,12 +1,1 @@
-const images = document.querySelectorAll('img')
-images.forEach(image => {
-    let src = image.src
-    image.src=''
-    const observer = new IntersectionObserver((entries,observer)=>{
-      entries.forEach((entry)=>{
-          entry.target.src = binding.value
-          observer.unobserve(entry.target)
-      })
-    },{threshold:0})
-    observer.observe(image)
-});
+const images=document.querySelectorAll("img");images.forEach((e=>{e.src;e.src="";new IntersectionObserver(((e,r)=>{e.forEach((e=>{e.target.src=binding.value,r.unobserve(e.target)}))}),{threshold:0}).observe(e)}));
